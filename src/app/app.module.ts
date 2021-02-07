@@ -5,6 +5,7 @@ import { AppComponent } from './app.component';
 import { AnxietyFormComponent } from './anxiety-form/anxiety-form.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './material/material.module';
+import { AnxietyTableComponent } from './anxiety-table/anxiety-table.component';
 
 
 
@@ -12,7 +13,8 @@ import { MaterialModule } from './material/material.module';
 @NgModule({
   declarations: [
     AppComponent,
-    AnxietyFormComponent
+    AnxietyFormComponent,
+    AnxietyTableComponent
   ],
   imports: [
     BrowserModule,
