@@ -1,0 +1,77 @@
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  margin: 12px;
+  padding: 6px;
+  border: 1px solid lightblue;
+  border-radius: 6px;
+}
+
+mat-form-field {
+  margin: 6px;
+  width: 100%;
+}
+
+mat-slider {
+  margin: 6px;
+  width: 100%;
+}
+
+mat-card {
+  display: flex;
+  justify-content: space-between;
+  margin: 6px;
+  width: 95%;
+}
+
+.quantifier {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+.quantifier-description {
+  width: 100%;
+}
+
+.quantifier-slider {
+  width: 100%;
+}
+
+.date-time-inputs {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.add-symptoms {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.list-symptoms {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.description {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.form-buttons {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+}
+
+.form-buttons button {
+  margin: 6px;
+}
+
+
