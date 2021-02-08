@@ -1,0 +1,16 @@
+.nav {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 800px;
+  margin: auto;
+}
+
+.nav-buttons {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.nav-button {
+ border-radius: 0;
+}
