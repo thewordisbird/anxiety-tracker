@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "anxiety-tracker-c83eb": {
+      "hosting": {
+        "anxiety-tracker": [
+          "anxiety-tracker-c83eb"
+        ]
+      }
+    }
+  }
+}
