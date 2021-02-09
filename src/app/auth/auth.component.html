@@ -1,0 +1,25 @@
+<div class="auth-form">
+  <mat-card>
+  <mat-card-title>{{ isLoginMode ? "Login" : "Register" }}</mat-card-title>
+    <form #authForm="ngForm" (ngSubmit)="onSubmit(authForm)" *ngIf="!isLoading">
+      <mat-card-content>
+      <mat-form-field class="">
+      <mat-label>Email</mat-label>
+      <input type="text" matInput name="email" ngModel required email>
+    </mat-form-field>
+    <br/>
+    <mat-form-field class="">
+      <mat-label>Password</mat-label>
+      <input type="password" matInput name="password" ngModel required minlength="6">
+    </mat-form-field>
+  </mat-card-content>
+  <mat-card-actions>
+    <button mat-raised-button color="primary">{{ isLoginMode ? "Login" : "Register" }}</button>
+  </mat-card-actions>
+    </form>
+  <mat-card-footer>
+    {{ isLoginMode ? "Not Registered?" : "Already Registered?" }} <a href="#" (click)="onSwitchMode($event)">{{ isLoginMode ? "Register Now!" : "Login!" }}</a>
+  </mat-card-footer>
+</mat-card>
+</div>
+
