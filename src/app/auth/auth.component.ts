@@ -1,8 +1,8 @@
 import { Component} from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { AuthService } from './auth.service';
-
-
+import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
+import { AuthResponseData, AuthService } from './auth.service';
 
 @Component({
   selector: 'app-auth',
@@ -10,16 +10,17 @@ import { AuthService } from './auth.service';
   styleUrls: ['./auth.component.css']
 })
 export class AuthComponent {
-  isLoginMode = true;
+  isSignInMode = true;
   isLoading = false;
   error: string = null;
 
   constructor(
-    public authService: AuthService) {}
+    private authService: AuthService,
+    private router: Router) {}
 
-  onSwitchMode(event) {
+  onSwitchMode(event: Event) {
     event.preventDefault()
-    this.isLoginMode = !this.isLoginMode;
+    this.isSignInMode = !this.isSignInMode;
   }
 
   onSubmit(form: NgForm) {
@@ -28,17 +29,28 @@ export class AuthComponent {
       const email = form.value.email;
       const password = form.value.password;
 
-      if (this.isLoginMode) {
-        this.authService.login(email, password);
+      let authObs: Observable<AuthResponseData>
+
+      this.authService.signUp(email, password)
+
+      this.isLoading = true;
+      if (this.isSignInMode) {
+        authObs = this.authService.signIn(email, password);
       } else {
-        // Register user and switch to login form
-        this.authService.signup(email, password)
-        .then(()=> console.log('login success'))
-        .catch((error) => console.error(error))
+        authObs = this.authService.signUp(email, password);
       }
 
-
-
+      // Subscribe to the auth observable to make auth request
+      authObs.subscribe(
+        resp => {
+          this.isLoading = false;
+          this.router.navigate(['/add'])
+        },
+        errorMessage => {
+          this.error = errorMessage;
+          // Show error alert
+          this.isLoading = false;
+        });
     }
   }
 }

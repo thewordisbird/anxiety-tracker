@@ -21,3 +21,8 @@ mat-card-footer {
   margin: auto;
   width: 100%;
 }
+
+mat-card.form-error-message {
+  background: rgba(255, 0, 0, .50 );
+  color: #fff;
+}

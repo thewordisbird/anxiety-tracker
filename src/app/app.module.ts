@@ -9,15 +9,32 @@ import { AnxietyTableComponent } from './anxiety-table/anxiety-table.component';
 import { HeaderComponent } from './header/header.component';
 import { AuthComponent } from './auth/auth.component';
 import { FormsModule } from '@angular/forms';
-import { AngularFireModule } from '@angular/fire';
 import { environment } from 'src/environments/environment';
-import { AngularFireAuthModule } from '@angular/fire/auth';
+import { HttpClientModule } from '@angular/common/http';
 
 const appRoutes: Routes = [
-  {path: 'login', component: AuthComponent },
-  {path: 'add', component: AnxietyFormComponent },
-  {path: 'events', component: AnxietyTableComponent },
-  {path: '', redirectTo: '/add', pathMatch: 'full' }
+  {
+    path: '',
+    redirectTo: '/auth',
+    pathMatch: 'full'
+  },
+  {
+    path: 'auth', component: AuthComponent,
+  },
+  {
+    path: 'add',
+    component: AnxietyFormComponent,
+  },
+  {
+    path: 'events',
+    component: AnxietyTableComponent,
+  },
+  {
+    path: '**',
+    redirectTo: 'auth',
+    pathMatch: 'full'
+  }
+
 ]
 
 
@@ -33,10 +50,9 @@ const appRoutes: Routes = [
     BrowserModule,
     RouterModule.forRoot(appRoutes),
     FormsModule,
+    HttpClientModule,
     BrowserAnimationsModule,
     MaterialModule,
-    AngularFireModule.initializeApp(environment.firebase),
-    AngularFireAuthModule
   ],
   providers: [],
   bootstrap: [AppComponent]
