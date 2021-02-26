@@ -20,9 +20,11 @@ export interface AuthResponseData {
 export class AuthService{
   // Store an emit any changes to user
   user = new BehaviorSubject<User>(null);
+  private tokenExpTimer: any;
 
   constructor (
-    private http: HttpClient
+    private http: HttpClient,
+    private router: Router
   ) {};
 
   signUp(email: string, password: string) {
@@ -51,6 +53,55 @@ export class AuthService{
     ).pipe(catchError(this.handleError), tap(resp => {
       this.handleAuth(resp.email, resp.localId, resp.idToken, +resp.expiresIn)
     }))
+  }
+
+  autoSignIn() {
+    /**
+     * Usage: Used to automatically log in user from app component when app first loads.
+     */
+    const userData: {
+      email: string,
+      id: string,
+      _token: string,
+      _tokenExpDate: string
+    } = JSON.parse(localStorage.getItem('userData'));
+    if (!userData) {
+      return;
+    }
+
+    const loadedUser = new User (
+      userData.email,
+      userData.id,
+      userData._token,
+      new Date(userData._tokenExpDate)
+    );
+
+    // Check if the token has expired
+    if (loadedUser.token) {
+      // set the loaded users as the logged in user. The user token exp date will be validated in the autoSignOut method
+      this.user.next(loadedUser)
+      // The expDuration will be used to reset the timer in autoSignOut. If it's negative, the user will be immediately signed out
+      const expDuration = new Date(userData._tokenExpDate).getTime() - new Date().getTime()
+      this.autoSignOut(expDuration)
+    }
+
+    // If all is good, set app user to localstorage user
+  };
+
+  signOut() {
+    this.user.next(null);
+    this.router.navigate(['/auth'])
+    localStorage.removeItem('userData')
+    if (this.tokenExpTimer) {
+      clearTimeout(this.tokenExpTimer);
+    }
+    this.tokenExpTimer = null;
+  }
+
+  autoSignOut(expDuration) {
+    this.tokenExpTimer = setTimeout(() => {
+      this.signOut()
+    }, expDuration)
   }
 
   handleError(errorResp: HttpErrorResponse) {

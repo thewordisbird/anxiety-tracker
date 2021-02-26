@@ -9,8 +9,8 @@ import { AnxietyTableComponent } from './anxiety-table/anxiety-table.component';
 import { HeaderComponent } from './header/header.component';
 import { AuthComponent } from './auth/auth.component';
 import { FormsModule } from '@angular/forms';
-import { environment } from 'src/environments/environment';
 import { HttpClientModule } from '@angular/common/http';
+import { AuthRequired, NotAuthenticated } from './auth/auth.gaurd';
 
 const appRoutes: Routes = [
   {
@@ -20,14 +20,17 @@ const appRoutes: Routes = [
   },
   {
     path: 'auth', component: AuthComponent,
+    canActivate: [NotAuthenticated]
   },
   {
     path: 'add',
     component: AnxietyFormComponent,
+    canActivate: [AuthRequired]
   },
   {
     path: 'events',
     component: AnxietyTableComponent,
+    canActivate: [AuthRequired]
   },
   {
     path: '**',

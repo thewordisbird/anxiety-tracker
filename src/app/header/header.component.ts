@@ -15,13 +15,14 @@ export class HeaderComponent  {
     private authService: AuthService
   ) { }
 
-  // ngOnInit(): void {
-  //   this.userSub = this.authService.auth.authState.subscribe(user => {
-  //     this.isAuthenticated = !!user
-  //   })
-  // }
+  ngOnInit(): void {
+    // subscribe to the user auth service observable.
+    this.userSub = this.authService.user.subscribe(user => {
+      this.isAuthenticated = !!user
+    })
+  }
 
-  // handleLogout() {
-  //   this.authService.logout()
-  // }
+  handleSignOut() {
+    this.authService.signOut()
+  }
 }
