@@ -11,6 +11,7 @@ import { AuthComponent } from './auth/auth.component';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { AuthRequired, NotAuthenticated } from './auth/auth.gaurd';
+import { SvgIconComponent } from './svg-icon/svg-icon.component';
 
 const appRoutes: Routes = [
   {
@@ -47,7 +48,8 @@ const appRoutes: Routes = [
     AnxietyFormComponent,
     AnxietyTableComponent,
     HeaderComponent,
-    AuthComponent
+    AuthComponent,
+    SvgIconComponent
   ],
   imports: [
     BrowserModule,
