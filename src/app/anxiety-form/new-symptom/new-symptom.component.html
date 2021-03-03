@@ -1,0 +1,13 @@
+<div class="backdrop" (click)="handleClose()">
+  <mat-card class="display">
+    <mat-form-field >
+      <mat-label>Symptom</mat-label>
+      <input matInput id="symptom" name="symptom" [(ngModel)]="symptom" required>
+    </mat-form-field>
+    <div class="form-buttons">
+      <button mat-raised-button color="primary" (click)="handleAddSymptom()">Add Symptom</button>
+      <button mat-raised-button color="warn" (click)="handleClose()">Cancel</button>
+    </div>
+
+  </mat-card>
+</div>

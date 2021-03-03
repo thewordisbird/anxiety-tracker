@@ -1,5 +1,6 @@
 
-<form class="mat-elevation-z8">
+<app-new-symptom *ngIf="newSymptom" (newSymptom)="addNewSymptom($event)" (close)="closeModal($event)"></app-new-symptom>
+<form (ngSubmit)="onSubmit(f)" #f="ngForm" class="mat-elevation-z8">
   <!-- <div class="quantifier">
     <div class="quantifier-description">
       My level of anxiety is {{ slider.value }}
@@ -10,7 +11,9 @@
 
   </div> -->
   <!-- <app-svg-icon *ngFor="let icon of sentimentIcons" [svgName]="icon.svgName" [svgURL]="icon.svgURL" [svgLabel]="icon.svgLabel"></app-svg-icon> -->
-  <div class="sentiment-label"><p>I'm Feeling: <span *ngIf="sentiment !== null">{{ sentimentMap[sentiment].description}}</span></p></div>
+  <div class="sentiment-label">
+    <p>I'm Feeling: <span *ngIf="sentiment !== null">{{ sentimentMap[sentiment].description}}</span></p>
+  </div>
   <ul>
     <li *ngFor="let s of sentimentMap; let i=index">
       <span
@@ -24,23 +27,27 @@
   <div class="date-time-inputs">
     <mat-form-field >
       <mat-label>Choose a date</mat-label>
-      <input matInput [matDatepicker]="picker">
+      <input matInput [matDatepicker]="picker" id="date" name="date" ngModel required>
       <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
       <mat-datepicker #picker></mat-datepicker>
     </mat-form-field>
 
     <mat-form-field class="">
       <mat-label>Time</mat-label>
-      <input matInput placeholder="12:00 PM" value="12:00 PM">
+      <input matInput placeholder="12:00 PM" value="12:00 PM" id="time" name="time" ngModel required>
     </mat-form-field>
   </div>
   <div class="add-symptoms">
-    <button mat-raised-button color="basic" >Add</button>
+    <button mat-raised-button color="basic" (click)="handleAddSymptom(symptomSelect.value)" >Add</button>
     <mat-form-field class="">
       <mat-label>Symptoms</mat-label>
-      <mat-select>
-        <mat-option #symptomSelector *ngFor="let symptom of symptomsOptions" [value]="symptom">
+      <mat-select #symptomSelect id="symptom" name="symptom" ngModel (ngModelChange)="handleSelectChange(symptomSelect.value)">
+
+        <mat-option  *ngFor="let symptom of symptomsOptions" [value]="symptom">
           {{symptom}}
+        </mat-option>
+        <mat-option value="Add Symptom">
+          Add Symptom
         </mat-option>
       </mat-select>
     </mat-form-field>
@@ -50,14 +57,14 @@
     <mat-card *ngFor="let symptom of currentSymptoms; let i = index" >
       {{ symptom }}
       <button mat-mini-fab color="warn" aria-label="Example icon button with a delete icon">
-        <mat-icon>delete</mat-icon>
+        <mat-icon (click)="handleDeleteSymptom(symptom)">delete</mat-icon>
       </button>
     </mat-card>
   </div>
   <div class="description">
     <mat-form-field class="">
       <mat-label>Current Thoughts</mat-label>
-      <textarea matInput placeholder="Ex. It makes me feel..." rows="4"></textarea>
+      <textarea matInput placeholder="Ex. It makes me feel..." rows="4" id="thoughts" name="thoughts" ngModel required></textarea>
     </mat-form-field>
   </div>
 
