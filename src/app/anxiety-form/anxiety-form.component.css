@@ -102,6 +102,12 @@ li {
 
 .sentiment-label {
   width: 100%;
-  font-size: 16px;
+  font: 400 14px/20px Roboto, "Helvetica Neue", sans-serif;
   margin: 12px 0 0 6px;
+  /* Need to find actual label color */
+  color: gray;
+}
+
+.sentiment-invalid {
+  color: red;
 }

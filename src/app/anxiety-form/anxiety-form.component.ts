@@ -2,12 +2,17 @@ import { NgForm } from '@angular/forms';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
 
-interface anxietyEvent {
+interface AnxietyEvent {
   level: number;
   date: Date;
   time: string;
   symptoms: string[];
   thoughts: string;
+}
+
+interface Symptom {
+  display: string,
+  value: string
 }
 
 
@@ -23,7 +28,7 @@ export class AnxietyFormComponent implements OnInit {
   sentiment: number = null;
   newSymptom = false
   currentSymptoms: string[] = []
-
+  formSubmitted = false;
 
 
 
@@ -56,13 +61,11 @@ export class AnxietyFormComponent implements OnInit {
 
   // Temp symptoms options data
   // TODO: Connect to database
-  symptomsOptions: string[] = [
-    "Chest Stiffness",
-    "Stomach Pain",
-    "Light Headed"
+  symptomsOptions: Symptom[] = [
+    {display: "Chest Stiffness", value: "chest-stiffness"},
+    {display: "Stomach Ache", value: "stomach-ache"},
+    {display: "Light Headed", value: "light-headed"}
   ]
-
-
 
   ngOnInit(): void {
     // console.log(this.anxietyForm)
@@ -78,18 +81,25 @@ export class AnxietyFormComponent implements OnInit {
   }
 
   handleSelectChange(symptom: string) {
-    if (symptom === "Add Symptom") {
+    if (symptom === "add-symptom") {
       this.newSymptom = true
     }
   }
 
   handleAddSymptom(symptom: string) {
     // Check that symptom isn't in current symptoms. add if ok.
+    // NEED TO CHANGE FIELD AFTER RETURN (I think i need to convert to a reactive form)
+    // Having trouble with this. Moving on for now. Tried property binding, two way prop binding.
+    // If symptom added -> set as symptom
+    // If canceled -> clear state
     const valid = this.currentSymptoms.find(s => s === symptom)
     console.log(valid)
     if (!valid && symptom !== '') {
       this.currentSymptoms = [...this.currentSymptoms, symptom]
     }
+    this.anxietyForm.setValue({
+      symptom: '0'
+    })
   }
 
   handleDeleteSymptom(symptom: string) {
@@ -101,15 +111,25 @@ export class AnxietyFormComponent implements OnInit {
     this.currentSymptoms = tmpCurrentSymptoms
   }
 
+  handleClearForm() {
+    this.sentiment = null;
+    this.currentSymptoms = []
+    this.formSubmitted = false
+    this.anxietyForm.resetForm()
+
+  }
+
   addNewSymptom(symptom: string) {
-    this.symptomsOptions.push(symptom)
+    const newSymptomValue = symptom.split(' ').join('-').toLowerCase()
+    console.log(newSymptomValue)
+    const newSymptom: Symptom = {
+      display: symptom,
+      value: newSymptomValue
+    }
+    this.symptomsOptions.push(newSymptom)
     this.newSymptom = false;
-    // NEED TO CHANGE FIELD AFTER RETURN
-    // If symptom added -> set as symptom
-    // If canceled -> clear state
-    this.anxietyForm.setValue({
-      symptom: symptom
-    })
+    this.handleAddSymptom(newSymptom.display)
+
   }
 
   closeModal() {
@@ -118,6 +138,24 @@ export class AnxietyFormComponent implements OnInit {
   }
 
   onSubmit(form: NgForm) {
+    // Make sure a anxiety level was selected
 
+    if (this.sentiment === null) {
+      this.formSubmitted = true
+      return
+    }
+
+    const formData = this.anxietyForm.value
+    const newEvent: AnxietyEvent = {
+      level: this.sentiment,
+      date: formData.date,
+      time: formData.time,
+      symptoms: this.currentSymptoms,
+      thoughts: formData.thoughts
+    }
+
+    // Send submission to database
+    console.log(newEvent)
+    this.handleClearForm()
   }
 }
