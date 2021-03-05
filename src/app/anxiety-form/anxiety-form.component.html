@@ -47,7 +47,7 @@
       mat-raised-button
       color="basic"
       type="button"
-      (click)="handleAddSymptom(symptomSelect.value)">
+      (click)="handleAddSymptom(symptomSelect)">
       Add
     </button>
     <mat-form-field class="">
@@ -59,7 +59,7 @@
         ngModel
         (ngModelChange)="handleSelectChange(symptomSelect.value)">
 
-        <mat-option  *ngFor="let symptom of symptomsOptions" [value]="symptom.value">
+        <mat-option  *ngFor="let symptom of symptoms | async" [value]="symptom.value">
           {{symptom.display}}
         </mat-option>
         <mat-option value="add-symptom">

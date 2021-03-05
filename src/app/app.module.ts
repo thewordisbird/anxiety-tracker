@@ -13,6 +13,9 @@ import { HttpClientModule } from '@angular/common/http';
 import { AuthRequired, NotAuthenticated } from './auth/auth.gaurd';
 import { SvgIconComponent } from './svg-icon/svg-icon.component';
 import { NewSymptomComponent } from './anxiety-form/new-symptom/new-symptom.component';
+import { AngularFireModule } from '@angular/fire';
+import { AngularFirestoreModule } from '@angular/fire/firestore';
+import { environment } from '../environments/environment';
 
 const appRoutes: Routes = [
   {
@@ -60,6 +63,8 @@ const appRoutes: Routes = [
     HttpClientModule,
     BrowserAnimationsModule,
     MaterialModule,
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFirestoreModule
   ],
   providers: [],
   bootstrap: [AppComponent]
