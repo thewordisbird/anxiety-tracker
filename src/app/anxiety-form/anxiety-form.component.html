@@ -1,9 +1,9 @@
 
 <app-new-symptom *ngIf="newSymptom" (newSymptom)="addNewSymptom($event)" (close)="closeModal($event)"></app-new-symptom>
 <form
-  (ngSubmit)="onSubmit(f)"
-  #f="ngForm"
+  [formGroup]="anxietyForm"
   class="mat-elevation-z8">
+  <!-- TODO: Create sepreate Sentiment Component -->
   <div class="sentiment-label">
     <p [ngClass]="{'sentiment-invalid': sentiment === null && formSubmitted}">I'm Feeling * : <span *ngIf="sentiment !== null">{{ sentimentMap[sentiment].description}}</span></p>
   </div>
@@ -17,16 +17,17 @@
       </span>
     </li>
   </ul>
+
   <div class="date-time-inputs">
     <mat-form-field >
       <mat-label>Choose a date</mat-label>
       <input
         id="date"
         name="date"
+        type="text"
         [matDatepicker]="picker"
         matInput
-        ngModel
-        required>
+        formControlName="date">
       <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
       <mat-datepicker #picker></mat-datepicker>
     </mat-form-field>
@@ -36,18 +37,19 @@
       <input
         id="time"
         name="time"
+        type="time"
         placeholder="12:00 PM"
         matInput
-        ngModel
-        required>
+        formControlName="date">
     </mat-form-field>
   </div>
+
   <div class="add-symptoms">
     <button
       mat-raised-button
       color="basic"
       type="button"
-      (click)="handleAddSymptom(symptomSelect)">
+      (click)="handleAddSymptom()">
       Add
     </button>
     <mat-form-field class="">
@@ -56,8 +58,8 @@
         #symptomSelect
         id="symptom"
         name="symptom"
-        ngModel
-        (ngModelChange)="handleSelectChange(symptomSelect.value)">
+        formControlName="symptom"
+        (selectionChange)="handleSelectChange()">
 
         <mat-option  *ngFor="let symptom of symptoms | async" [value]="symptom.value">
           {{symptom.display}}
@@ -68,6 +70,8 @@
       </mat-select>
     </mat-form-field>
   </div>
+
+  <!-- TODO: Create SymptomItems and SymptomItem components -->
   <div class="list-symptoms">
     <h4 *ngIf="currentSymptoms.length > 0">Symptoms</h4>
     <mat-card *ngFor="let symptom of currentSymptoms; let i = index" >
@@ -80,6 +84,7 @@
       </button>
     </mat-card>
   </div>
+
   <div class="description">
     <mat-form-field class="">
       <mat-label>Current Thoughts</mat-label>
@@ -89,8 +94,7 @@
         placeholder="Ex. It makes me feel..."
         rows="4"
         matInput
-        ngModel
-        required></textarea>
+        formControlName="thoughts"></textarea>
     </mat-form-field>
   </div>
 

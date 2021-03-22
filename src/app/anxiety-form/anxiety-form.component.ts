@@ -1,65 +1,88 @@
-import { NgForm } from '@angular/forms';
-import { Component, ViewChild } from '@angular/core';
+import { NgForm, Validators } from '@angular/forms';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { FormGroup, FormControl } from '@angular/forms';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { sentimentMap } from './sentiment-map';
+import { filter, take, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-anxiety-form',
   templateUrl: './anxiety-form.component.html',
   styleUrls: ['./anxiety-form.component.css']
 })
-export class AnxietyFormComponent {
-  @ViewChild('f', {static: false}) anxietyForm: NgForm;
+export class AnxietyFormComponent implements OnInit{
+  anxietyForm: FormGroup;
   sentimentMap = sentimentMap;
   sentiment: number = null;
-  newSymptom = false
+  newSymptom = false;
   currentSymptoms: string[] = []
   formSubmitted = false;
 
-   // Firestore Collections
-   private symptomCollection: AngularFirestoreCollection<Symptom>;
-   private anxietyEventCollection: AngularFirestoreCollection<AnxietyEvent>;
+  // Firestore Collections
+  private symptomCollection: AngularFirestoreCollection<Symptom>;
+  private anxietyEventCollection: AngularFirestoreCollection<AnxietyEvent>;
 
-  // Firestore Collection Observables
-  symptoms: Observable<any[]>;
-  anxietyEvents: Observable<any[]>;
+ // Firestore Collection Observables
+ symptoms: Observable<Symptom[]>;
+ anxietyEvents: Observable<any[]>;
 
-  constructor (private firestore: AngularFirestore) {
-    // Initialize Firestore
-    this.symptomCollection = firestore.collection<Symptom>('symptoms');
-    this.symptoms = this.symptomCollection.valueChanges();
+ constructor (private firestore: AngularFirestore) {
+   // Initialize Firestore
+   this.symptomCollection = firestore.collection<Symptom>('symptoms');
+   this.symptoms = this.symptomCollection.valueChanges();
 
-    this.anxietyEventCollection = firestore.collection<AnxietyEvent>('anxietyEvents');
-    this.anxietyEvents = this.anxietyEventCollection.valueChanges();
-   };
+   this.anxietyEventCollection = firestore.collection<AnxietyEvent>('anxietyEvents');
+   this.anxietyEvents = this.anxietyEventCollection.valueChanges();
+  };
+
+  ngOnInit() {
+    this.initForm();
+  }
+
+  initForm() {
+    const date = '';
+    const time = '';
+    const symptom = '';
+    const thoughts = ''
+
+    this.anxietyForm = new FormGroup({
+      'date': new FormControl(date, Validators.required),
+      'time': new FormControl(time, Validators.required),
+      'symptom': new FormControl(symptom, Validators.required),
+      'thoughts': new FormControl(thoughts, Validators.required)
+    })
+
+  }
 
   setSentiment(value: number) {
     // Set sentiment from 0 to 4, sad to happy
     this.sentiment = value;
   }
 
-  handleSelectChange(symptom: string) {
-    if (symptom === "add-symptom") {
-      this.newSymptom = true
+  // Handlers
+  handleAddSymptom() {
+    // TODO: Store db ID with symptoms incase the names ever need to be updated.
+    const symptomValue = this.anxietyForm.value.symptom
+    const valid = this.anxietyForm.controls.symptom.status === 'VALID' && !this.currentSymptoms.includes(symptomValue)
+    if (valid) {
+      // const symptomDisplay = this.firestore.collection('symptoms', ref => ref.where('value', '==', symptomValue)).valueChanges()
+      this.firestore.collection('symptoms', ref => ref.where('value', '==', symptomValue).limit(1)).valueChanges()
+        .pipe(
+          take(1)
+        )
+        .subscribe((result: Symptom[]) => {
+          this.currentSymptoms = [...this.currentSymptoms, result[0].display]
+        })
     }
+    this.anxietyForm.reset('symptom')
   }
 
-  handleAddSymptom(symptom: any) {
-    // Check that symptom isn't in current symptoms. add if ok.
-    // NEED TO CHANGE FIELD AFTER RETURN (I think i need to convert to a reactive form)
-    // Having trouble with this. Moving on for now. Tried property binding, two way prop binding.
-    // If symptom added -> set as symptom
-    // If canceled -> clear state
-
-    // TODO: Store db ID with symptoms incase the names ever need to be updated.
-    const valid = this.currentSymptoms.find(s => s === symptom.triggerValue)
-    if (!valid && symptom !== '') {
-      this.currentSymptoms = [...this.currentSymptoms, symptom.triggerValue]
+  handleSelectChange() {
+    console.log('select change')
+    if (this.anxietyForm.controls.symptom.value === "add-symptom") {
+      this.newSymptom = true
     }
-    this.anxietyForm.setValue({
-      symptom: '0'
-    })
   }
 
   handleDeleteSymptom(symptom: string) {
@@ -75,9 +98,15 @@ export class AnxietyFormComponent {
     this.sentiment = null;
     this.currentSymptoms = []
     this.formSubmitted = false
-    this.anxietyForm.resetForm()
+    this.initForm()
   }
 
+  closeModal(event) {
+    this.newSymptom = false
+    this.anxietyForm.reset('symptom')
+  }
+
+  // Once all the functionality is moved to a service, this should be part of the new-symptom componenent
   addNewSymptom(symptomDisplay: string) {
     const symptomValue = symptomDisplay.split(' ').join('-').toLowerCase()
     const newSymptom: Symptom = {
@@ -85,39 +114,44 @@ export class AnxietyFormComponent {
       value: symptomValue
     }
 
-    // Add to Firestore
-    this.symptomCollection.add(newSymptom)
+    // Add new symptom to firebase if valid
+    this.symptoms.subscribe(symptoms => {
+      const filterdSymptoms = symptoms.filter(symptom => symptom.value === newSymptom.value)
+      const valid = filterdSymptoms.length === 0
 
-    // Add symptom to current symptoms and reset newSymptom state
-    this.handleAddSymptom(newSymptom.display)
-    this.newSymptom = false;
+      if (valid) {
+        console.log('[addNewSymptom]', newSymptom)
+        this.symptomCollection.add(newSymptom)
+        this.currentSymptoms = [...this.currentSymptoms, newSymptom.display]
+      }
+    })
+
+    this.newSymptom = false
+    this.anxietyForm.reset('symptom')
   }
 
-  closeModal() {
-    this.newSymptom = false;
-  }
-
-  onSubmit(form: NgForm) {
+  onSubmit(){
     // Validate Sentiment
     if (this.sentiment === null) {
       this.formSubmitted = true
       return
     }
 
-    const formData = this.anxietyForm.value
     const newEvent: AnxietyEvent = {
       level: this.sentiment,
-      date: formData.date,
-      time: formData.time,
+      date: this.anxietyForm.controls.date.value,
+      time: this.anxietyForm.controls.time.value,
       symptoms: this.currentSymptoms,
-      thoughts: formData.thoughts
+      thoughts: this.anxietyForm.controls.thoughts.value
     }
 
     // Add to Firestore
     this.anxietyEventCollection.add(newEvent);
 
     this.handleClearForm()
+
   }
+
 }
 
 // Interfaces

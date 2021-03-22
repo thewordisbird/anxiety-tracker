@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule, Routes } from '@angular/router';
 import { AppComponent } from './app.component';
@@ -16,6 +17,8 @@ import { NewSymptomComponent } from './anxiety-form/new-symptom/new-symptom.comp
 import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { environment } from '../environments/environment';
+import { SymptomItemsComponent } from './symptom-items/symptom-items.component';
+import { SymptomItemComponent } from './symptom-items/symptom-item/symptom-item.component';
 
 const appRoutes: Routes = [
   {
@@ -54,12 +57,15 @@ const appRoutes: Routes = [
     HeaderComponent,
     AuthComponent,
     SvgIconComponent,
-    NewSymptomComponent
+    NewSymptomComponent,
+    SymptomItemsComponent,
+    SymptomItemComponent
   ],
   imports: [
     BrowserModule,
     RouterModule.forRoot(appRoutes),
     FormsModule,
+    ReactiveFormsModule,
     HttpClientModule,
     BrowserAnimationsModule,
     MaterialModule,
