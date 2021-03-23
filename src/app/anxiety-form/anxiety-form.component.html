@@ -1,24 +1,8 @@
 
-<app-new-symptom *ngIf="newSymptom" (newSymptom)="addNewSymptom($event)" (close)="closeModal($event)"></app-new-symptom>
 <form
   [formGroup]="anxietyForm"
   class="mat-elevation-z8">
-  <!-- TODO: Create sepreate Sentiment Component -->
-  <div class="sentiment-label">
-    <p [ngClass]="{'sentiment-invalid': sentiment === null && formSubmitted}">I'm Feeling * : <span *ngIf="sentiment !== null">{{ sentimentMap[sentiment].description}}</span></p>
-  </div>
-  <ul>
-    <li *ngFor="let s of sentimentMap; let i=index">
-      <span
-        class="material-icons sentiment-icons"
-        [ngClass]="{'sentiment-icon-active': sentiment === i}"
-        (click)="setSentiment(i)">
-        {{ s.svgName }}
-      </span>
-    </li>
-  </ul>
-  <!-- End Sentiment -->
-
+  <app-form-sentiment-field [valid]="true" (sentiment)="handleSetSentiment($event)"></app-form-sentiment-field>
   <div class="date-time-inputs">
     <mat-form-field >
       <mat-label>Choose a date</mat-label>
@@ -45,8 +29,8 @@
     </mat-form-field>
   </div>
 
-  <app-form-chip-field [fieldLabel]="'Symptom'" [itemOptions]="symptoms"></app-form-chip-field>
-  <app-form-chip-field [fieldLabel]="'Emotion'" [itemOptions]="emotions"></app-form-chip-field>
+  <app-form-chip-field [fieldLabel]="'Symptom'" [itemOptions]="symptomOptions"></app-form-chip-field>
+  <app-form-chip-field [fieldLabel]="'Emotion'" [itemOptions]="emotionOptions"></app-form-chip-field>
 
   <div class="description">
     <mat-form-field class="">

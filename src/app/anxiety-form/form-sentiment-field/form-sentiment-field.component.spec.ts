@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { NewSymptomComponent } from './new-symptom.component';
+import { FormSentimentFieldComponent } from './form-sentiment-field.component';
 
-describe('NewSymptomComponent', () => {
-  let component: NewSymptomComponent;
-  let fixture: ComponentFixture<NewSymptomComponent>;
+describe('FormSentimentFieldComponent', () => {
+  let component: FormSentimentFieldComponent;
+  let fixture: ComponentFixture<FormSentimentFieldComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ NewSymptomComponent ]
+      declarations: [ FormSentimentFieldComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(NewSymptomComponent);
+    fixture = TestBed.createComponent(FormSentimentFieldComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

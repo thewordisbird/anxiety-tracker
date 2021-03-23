@@ -75,44 +75,14 @@ mat-card {
   margin: 6px;
 }
 
-ul {
-  width: 100%;
-  margin: 0;
-}
-
-li {
-  display: inline-block;
-}
-
-.sentiment-icons {
-  font-size: 48px;
-  margin-right: 24px;
-  opacity: 55%;
-  cursor: pointer;
-}
-
-.sentiment-icons:hover {
-  opacity: 100%;
-}
-
-.sentiment-icon-active {
-  opacity: 100%;
-}
-
-
-.sentiment-label {
-  width: 100%;
-  font: 400 14px/20px Roboto, "Helvetica Neue", sans-serif;
-  margin: 12px 0 0 6px;
-  /* Need to find actual label color */
-  color: gray;
-}
-
-.sentiment-invalid {
-  color: red;
-}
 
 app-form-chip-field {
+  margin: auto;
+  width: inherit;
+  box-sizing: border-box;
+}
+
+app-form-sentiment-field {
   margin: auto;
   width: inherit;
   box-sizing: border-box;

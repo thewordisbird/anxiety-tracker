@@ -13,7 +13,6 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { AuthRequired, NotAuthenticated } from './auth/auth.gaurd';
 import { SvgIconComponent } from './svg-icon/svg-icon.component';
-import { NewSymptomComponent } from './anxiety-form/new-symptom/new-symptom.component';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { environment } from '../environments/environment';
@@ -21,6 +20,7 @@ import { SymptomItemsComponent } from './symptom-items/symptom-items.component';
 import { SymptomItemComponent } from './symptom-items/symptom-item/symptom-item.component';
 import { FormChipFieldComponent } from './form-chip-field/form-chip-field.component';
 import { AddNewItemComponent } from './form-chip-field/add-new-item/add-new-item.component';
+import { FormSentimentFieldComponent } from './anxiety-form/form-sentiment-field/form-sentiment-field.component';
 
 const appRoutes: Routes = [
   {
@@ -44,7 +44,7 @@ const appRoutes: Routes = [
   },
   {
     path: 'test',
-    component: FormChipFieldComponent
+    component: FormSentimentFieldComponent
   },
   {
     path: '**',
@@ -63,11 +63,11 @@ const appRoutes: Routes = [
     HeaderComponent,
     AuthComponent,
     SvgIconComponent,
-    NewSymptomComponent,
     SymptomItemsComponent,
     SymptomItemComponent,
     FormChipFieldComponent,
-    AddNewItemComponent
+    AddNewItemComponent,
+    FormSentimentFieldComponent
   ],
   imports: [
     BrowserModule,
