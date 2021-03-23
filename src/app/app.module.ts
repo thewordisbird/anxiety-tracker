@@ -18,8 +18,8 @@ import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { environment } from '../environments/environment';
 import { SymptomItemsComponent } from './symptom-items/symptom-items.component';
 import { SymptomItemComponent } from './symptom-items/symptom-item/symptom-item.component';
-import { FormChipFieldComponent } from './form-chip-field/form-chip-field.component';
-import { AddNewItemComponent } from './form-chip-field/add-new-item/add-new-item.component';
+import { FormChipFieldComponent } from './anxiety-form/form-chip-field/form-chip-field.component';
+import { AddNewItemComponent } from './anxiety-form/form-chip-field/add-new-item/add-new-item.component';
 import { FormSentimentFieldComponent } from './anxiety-form/form-sentiment-field/form-sentiment-field.component';
 
 const appRoutes: Routes = [
