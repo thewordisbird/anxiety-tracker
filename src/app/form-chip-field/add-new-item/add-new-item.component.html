@@ -1,0 +1,20 @@
+<div class="backdrop" (click)="handleClose()"></div>
+<mat-card class="modal">
+  <mat-icon class="close-icon" (click)="handleClose()">close</mat-icon>
+  <div class="add-new-item-input">
+    <button
+      mat-raised-button
+      color="basic"
+      type="button"
+      (click)="handleAddItem()">
+      Add {{"Symptom"}}
+    </button>
+
+    <mat-form-field >
+      <mat-label>{{"Symptom"}}</mat-label>
+      <input matInput name="item" [(ngModel)]="item" required>
+    </mat-form-field>
+  </div>
+</mat-card>
+
+

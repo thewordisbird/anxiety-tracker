@@ -19,6 +19,8 @@ import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { environment } from '../environments/environment';
 import { SymptomItemsComponent } from './symptom-items/symptom-items.component';
 import { SymptomItemComponent } from './symptom-items/symptom-item/symptom-item.component';
+import { FormChipFieldComponent } from './form-chip-field/form-chip-field.component';
+import { AddNewItemComponent } from './form-chip-field/add-new-item/add-new-item.component';
 
 const appRoutes: Routes = [
   {
@@ -41,6 +43,10 @@ const appRoutes: Routes = [
     canActivate: [AuthRequired]
   },
   {
+    path: 'test',
+    component: FormChipFieldComponent
+  },
+  {
     path: '**',
     redirectTo: 'auth',
     pathMatch: 'full'
@@ -59,7 +65,9 @@ const appRoutes: Routes = [
     SvgIconComponent,
     NewSymptomComponent,
     SymptomItemsComponent,
-    SymptomItemComponent
+    SymptomItemComponent,
+    FormChipFieldComponent,
+    AddNewItemComponent
   ],
   imports: [
     BrowserModule,

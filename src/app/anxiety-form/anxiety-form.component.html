@@ -17,6 +17,7 @@
       </span>
     </li>
   </ul>
+  <!-- End Sentiment -->
 
   <div class="date-time-inputs">
     <mat-form-field >
@@ -44,46 +45,8 @@
     </mat-form-field>
   </div>
 
-  <div class="add-symptoms">
-    <button
-      mat-raised-button
-      color="basic"
-      type="button"
-      (click)="handleAddSymptom()">
-      Add
-    </button>
-    <mat-form-field class="">
-      <mat-label>Select Symptom</mat-label>
-      <mat-select
-        #symptomSelect
-        id="symptom"
-        name="symptom"
-        formControlName="symptom"
-        (selectionChange)="handleSelectChange()">
-
-        <mat-option  *ngFor="let symptom of symptoms | async" [value]="symptom.value">
-          {{symptom.display}}
-        </mat-option>
-        <mat-option value="add-symptom">
-          Add Symptom
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-  </div>
-
-  <!-- TODO: Create SymptomItems and SymptomItem components -->
-  <div class="list-symptoms">
-    <h4 *ngIf="currentSymptoms.length > 0">Symptoms</h4>
-    <mat-card *ngFor="let symptom of currentSymptoms; let i = index" >
-      {{ symptom }}
-      <button
-        mat-mini-fab
-        color="warn"
-        aria-label="Example icon button with a delete icon">
-        <mat-icon (click)="handleDeleteSymptom(symptom)">delete</mat-icon>
-      </button>
-    </mat-card>
-  </div>
+  <app-form-chip-field [fieldLabel]="'Symptom'" [itemOptions]="symptoms"></app-form-chip-field>
+  <app-form-chip-field [fieldLabel]="'Emotion'" [itemOptions]="emotions"></app-form-chip-field>
 
   <div class="description">
     <mat-form-field class="">

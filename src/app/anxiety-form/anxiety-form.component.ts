@@ -13,27 +13,44 @@ import { filter, take, tap } from 'rxjs/operators';
 })
 export class AnxietyFormComponent implements OnInit{
   anxietyForm: FormGroup;
+
   sentimentMap = sentimentMap;
   sentiment: number = null;
+
   newSymptom = false;
   currentSymptoms: string[] = []
   formSubmitted = false;
 
+  // Temp data... will be retrieved from firebase (thru service)
+  symptoms = [
+    {display: "Chest Stiffness", value: "chest-stiffness"},
+    {display: "Head Ache", value: "head-ache"},
+    {display: "Stomach Pain", value: "stomach-pain"}
+  ]
+
+  emotions = [
+    {display: "Sad", value: "sad"},
+    {display: "Happy", value: "happy"},
+    {display: "Scared", value: "scared"},
+    {display: "Angry", value: "angry"},
+    {display: "Surprised", value: "suprised"},
+    {display: "Disgusted", value: "disgusted"},
+  ]
   // Firestore Collections
-  private symptomCollection: AngularFirestoreCollection<Symptom>;
-  private anxietyEventCollection: AngularFirestoreCollection<AnxietyEvent>;
+  // private symptomCollection: AngularFirestoreCollection<Symptom>;
+  // private anxietyEventCollection: AngularFirestoreCollection<AnxietyEvent>;
 
  // Firestore Collection Observables
- symptoms: Observable<Symptom[]>;
- anxietyEvents: Observable<any[]>;
+//  symptoms: Observable<Symptom[]>;
+//  anxietyEvents: Observable<any[]>;
 
  constructor (private firestore: AngularFirestore) {
    // Initialize Firestore
-   this.symptomCollection = firestore.collection<Symptom>('symptoms');
-   this.symptoms = this.symptomCollection.valueChanges();
+  //  this.symptomCollection = firestore.collection<Symptom>('symptoms');
+  //  this.symptoms = this.symptomCollection.valueChanges();
 
-   this.anxietyEventCollection = firestore.collection<AnxietyEvent>('anxietyEvents');
-   this.anxietyEvents = this.anxietyEventCollection.valueChanges();
+  //  this.anxietyEventCollection = firestore.collection<AnxietyEvent>('anxietyEvents');
+  //  this.anxietyEvents = this.anxietyEventCollection.valueChanges();
   };
 
   ngOnInit() {
@@ -115,16 +132,16 @@ export class AnxietyFormComponent implements OnInit{
     }
 
     // Add new symptom to firebase if valid
-    this.symptoms.subscribe(symptoms => {
-      const filterdSymptoms = symptoms.filter(symptom => symptom.value === newSymptom.value)
-      const valid = filterdSymptoms.length === 0
+    // this.symptoms.subscribe(symptoms => {
+    //   const filterdSymptoms = symptoms.filter(symptom => symptom.value === newSymptom.value)
+    //   const valid = filterdSymptoms.length === 0
 
-      if (valid) {
-        console.log('[addNewSymptom]', newSymptom)
-        this.symptomCollection.add(newSymptom)
-        this.currentSymptoms = [...this.currentSymptoms, newSymptom.display]
-      }
-    })
+    //   if (valid) {
+    //     console.log('[addNewSymptom]', newSymptom)
+    //     this.symptomCollection.add(newSymptom)
+    //     this.currentSymptoms = [...this.currentSymptoms, newSymptom.display]
+    //   }
+    // })
 
     this.newSymptom = false
     this.anxietyForm.reset('symptom')
@@ -146,7 +163,7 @@ export class AnxietyFormComponent implements OnInit{
     }
 
     // Add to Firestore
-    this.anxietyEventCollection.add(newEvent);
+    // this.anxietyEventCollection.add(newEvent);
 
     this.handleClearForm()
 

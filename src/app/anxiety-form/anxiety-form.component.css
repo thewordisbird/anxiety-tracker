@@ -111,3 +111,9 @@ li {
 .sentiment-invalid {
   color: red;
 }
+
+app-form-chip-field {
+  margin: auto;
+  width: inherit;
+  box-sizing: border-box;
+}

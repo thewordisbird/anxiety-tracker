@@ -1,1 +1,7 @@
-<p>symptom-item works!</p>
+
+  <mat-chip *ngFor="let symptom of symptoms" [selectable]="true"
+    [removable]="true" (removed)="handleRemove(symptom)">
+    {{symptom}}
+    <mat-icon matChipRemove>cancel</mat-icon>
+  </mat-chip>
+

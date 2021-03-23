@@ -1,0 +1,29 @@
+.form-chip-field {
+  width: 100%;
+}
+
+.form-chip-add-input {
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+mat-form-field {
+  margin: 12px 12px 6px 6px;
+  width: 100%;
+}
+
+.mat-raised-button {
+  min-width: unset;
+  margin: 12px 6px 6px 12px;
+}
+
+mat-card {
+  margin: 6px 12px;
+  box-sizing: border-box;
+}
+
+mat-chip-list {
+  width: 100%;
+  margin: auto;
+}

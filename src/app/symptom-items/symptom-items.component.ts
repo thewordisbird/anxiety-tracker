@@ -6,7 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./symptom-items.component.css']
 })
 export class SymptomItemsComponent implements OnInit {
-
+  symptoms = ['Symptom A', 'Symptom B', 'Symptom C', 'Symptom D']
   constructor() { }
 
   ngOnInit(): void {

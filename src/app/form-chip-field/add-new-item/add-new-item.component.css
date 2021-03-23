@@ -1,0 +1,40 @@
+.backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.75);
+  z-index: 50;
+}
+
+.modal {
+  position: fixed;
+  top: 30%;
+  left: 35vw;
+  width: 30vw;
+  padding: 16px;
+  z-index: 100;
+  background: white;
+}
+
+.add-new-item-input {
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+mat-form-field {
+  margin: 12px 12px 6px 6px;
+  width: 100%;
+}
+
+.mat-raised-button {
+  min-width: unset;
+  margin: 12px 6px 6px 12px;
+}
+
+.close-icon {
+  float: right;
+  cursor: pointer;
+}
