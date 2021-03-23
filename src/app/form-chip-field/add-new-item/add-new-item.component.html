@@ -7,11 +7,11 @@
       color="basic"
       type="button"
       (click)="handleAddItem()">
-      Add {{"Symptom"}}
+      Add {{fieldLabel}}
     </button>
 
     <mat-form-field >
-      <mat-label>{{"Symptom"}}</mat-label>
+      <mat-label>{{fieldLabel}}</mat-label>
       <input matInput name="item" [(ngModel)]="item" required>
     </mat-form-field>
   </div>

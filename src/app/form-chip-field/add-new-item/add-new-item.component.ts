@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'app-add-new-item',
@@ -6,6 +6,7 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
   styleUrls: ['./add-new-item.component.css']
 })
 export class AddNewItemComponent implements OnInit {
+  @Input() fieldLabel: string;
   @Output() newItem = new EventEmitter<string>();
   @Output() close = new EventEmitter<void>();
 
