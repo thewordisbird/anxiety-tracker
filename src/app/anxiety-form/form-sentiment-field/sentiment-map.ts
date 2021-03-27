@@ -4,22 +4,22 @@
 export const sentimentMap = [
   {
     svgName: 'sentiment_very_dissatisfied',
-    description: 'Very Sad'
+    description: 'Extemely Anxious'
   },
   {
     svgName: 'sentiment_dissatisfied',
-    description: 'Sad'
+    description: 'Moderately Anxious'
   },
   {
     svgName: 'sentiment_neutral',
-    description: 'Fine'
+    description: 'Anxious'
   },
   {
     svgName: 'sentiment_satisfied',
-    description: 'Happy'
+    description: 'Slightly Anxious'
   },
   {
     svgName: 'sentiment_very_satisfied',
-    description: 'Very Happy'
+    description: 'Not Anxious'
   },
 ]

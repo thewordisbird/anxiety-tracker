@@ -9,12 +9,13 @@
       Add {{fieldLabel}}
     </button>
 
-    <mat-form-field class="">
+    <mat-form-field class="mat-select-invalid ng-invalid">
       <mat-label>Select {{fieldLabel}}</mat-label>
       <mat-select
         id={{fieldLabel.toLowerCase()}}
         [formControl]="chipItem"
-        (selectionChange)="handleSelectChange()">
+        (selectionChange)="handleSelectChange()"
+        class="mat-select-invalid ng-invalid">
 
         <mat-option  *ngFor="let itemOption of itemOptions" [value]="itemOption.value">
           {{itemOption.display}}

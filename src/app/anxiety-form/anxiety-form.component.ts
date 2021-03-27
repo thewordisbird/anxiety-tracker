@@ -1,58 +1,70 @@
 import { Validators } from '@angular/forms';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
-import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
-import { Observable } from 'rxjs';
-import { filter, take, tap } from 'rxjs/operators';
+import { DataStorageService } from '../shared/data-storage.service';
+import { Symptom, Emotion, AnxietyEvent } from '../models';
+import { AnxietyFormService } from './anxiety-form.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-anxiety-form',
   templateUrl: './anxiety-form.component.html',
   styleUrls: ['./anxiety-form.component.css']
 })
-export class AnxietyFormComponent implements OnInit{
+export class AnxietyFormComponent implements OnInit, OnDestroy{
   anxietyForm: FormGroup;
 
+  symptomOptions: Symptom[];
+  emotionOptions: Emotion[];
+
+  symptomsDataSubscription: Subscription;
+  emotionsDataSubscription: Subscription;
+  symptomsSubscription: Subscription;
+  emotionsSubscription: Subscription;
+
   sentiment: number = null;
-  symptoms = []
-  emotions = []
+  symptoms: Symptom[] = [];
+  emotions: Emotion[] = [];
 
   formSubmitted = false;
 
-  // Temp data... will be retrieved from firebase (thru service)
-  symptomOptions = [
-    {display: "Chest Stiffness", value: "chest-stiffness"},
-    {display: "Head Ache", value: "head-ache"},
-    {display: "Stomach Pain", value: "stomach-pain"}
-  ]
-
-  emotionOptions = [
-    {display: "Sad", value: "sad"},
-    {display: "Happy", value: "happy"},
-    {display: "Scared", value: "scared"},
-    {display: "Angry", value: "angry"},
-    {display: "Surprised", value: "suprised"},
-    {display: "Disgusted", value: "disgusted"},
-  ]
-  // Firestore Collections
-  // private symptomCollection: AngularFirestoreCollection<Symptom>;
-  // private anxietyEventCollection: AngularFirestoreCollection<AnxietyEvent>;
-
- // Firestore Collection Observables
-//  symptoms: Observable<Symptom[]>;
-//  anxietyEvents: Observable<any[]>;
-
- constructor (private firestore: AngularFirestore) {
-   // Initialize Firestore
-  //  this.symptomCollection = firestore.collection<Symptom>('symptoms');
-  //  this.symptoms = this.symptomCollection.valueChanges();
-
-  //  this.anxietyEventCollection = firestore.collection<AnxietyEvent>('anxietyEvents');
-  //  this.anxietyEvents = this.anxietyEventCollection.valueChanges();
-  };
+ constructor (
+   private dataStorageService: DataStorageService,
+   private anxietyFormService: AnxietyFormService
+   ) {};
 
   ngOnInit() {
-    this.initForm();
+    this.initForm()
+
+    this.dataStorageService.fetchSymptoms()
+      .subscribe(symptomOptions => {
+        this.symptomOptions = symptomOptions
+      })
+
+    this.dataStorageService.fetchEmotions()
+      .subscribe(emotionOptions => {
+        this.emotionOptions = emotionOptions
+      })
+
+    this.symptomsSubscription = this.anxietyFormService.symptomsChanged.subscribe(
+      (symptoms: Symptom[]) => {
+        this.symptoms = symptoms
+      }
+    )
+
+    this.emotionsSubscription = this.anxietyFormService.emotionsChanged.subscribe(
+      (emotions: Emotion[]) => {
+        this.emotions = emotions
+      }
+    )
+  }
+
+  ngOnDestroy() {
+    // Clean up subscriptions
+    this.symptomsDataSubscription.unsubscribe()
+    this.emotionsDataSubscription.unsubscribe()
+    this.symptomsSubscription.unsubscribe()
+    this.emotionsSubscription.unsubscribe()
   }
 
   initForm() {
@@ -64,7 +76,6 @@ export class AnxietyFormComponent implements OnInit{
     this.anxietyForm = new FormGroup({
       'date': new FormControl(date, Validators.required),
       'time': new FormControl(time, Validators.required),
-      'symptom': new FormControl(symptom, Validators.required),
       'thoughts': new FormControl(thoughts, Validators.required)
     })
   }
@@ -72,48 +83,28 @@ export class AnxietyFormComponent implements OnInit{
   // Handlers
   handleSetSentiment(event) {
     this.sentiment = event
+    this.anxietyFormService.updateSentiment(event)
   }
 
   handleClearForm() {
     this.sentiment = null;
-    this.symptoms = []
-    this.emotions = []
-    this.formSubmitted = false
-    this.initForm()
+    this.anxietyFormService.updateSentiment(null);
+    this.anxietyFormService.clearSymptoms();
+    this.anxietyFormService.clearSymptoms();
+    this.formSubmitted = false;
+    this.initForm();
   }
 
   onSubmit(){
-    // Validate Sentiment
-    if (this.sentiment === null) {
+    // console.log(new Date(this.anxietyForm.controls.date.value).toISOString())
+    console.log('submitting', this.anxietyForm)
+    if (this.anxietyForm.valid && !!this.sentiment && !!this.symptoms && !!this.emotions) {
+      this.anxietyFormService.storeFormData(this.anxietyForm.value)
       this.formSubmitted = true
-      return
+      this.handleClearForm()
     }
 
-    const newEvent: AnxietyEvent = {
-      level: this.sentiment,
-      date: this.anxietyForm.controls.date.value,
-      time: this.anxietyForm.controls.time.value,
-      symptoms: this.symptoms,
-      thoughts: this.anxietyForm.controls.thoughts.value
-    }
-
-    // Add to Firestore
-    // this.anxietyEventCollection.add(newEvent);
-
-    this.handleClearForm()
   }
 }
 
-// Interfaces
-interface AnxietyEvent {
-  level: number;
-  date: Date;
-  time: string;
-  symptoms: string[];
-  thoughts: string;
-}
 
-interface Symptom {
-  display: string,
-  value: string
-}

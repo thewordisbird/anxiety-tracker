@@ -1,29 +1,42 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
+import { AnxietyFormService } from '../anxiety-form.service';
 
 @Component({
   selector: 'app-form-chip-field',
   templateUrl: './form-chip-field.component.html',
   styleUrls: ['./form-chip-field.component.css']
 })
-export class FormChipFieldComponent implements OnInit {
-  @Input() itemOptions: ChipItem[]
+export class FormChipFieldComponent {
   @Input() fieldLabel: string;
-  @Output() removeItem = new EventEmitter<ChipItem>()
-  @Output() addNewItem = new EventEmitter<ChipItem>()
-  chipItem = new FormControl('', Validators.required)
-  chipItems: ChipItem[] = [];
-  showModal = false;
+  @Input() itemOptions: ChipItem[]
+  @Input() chipItems: ChipItem[]
 
-  constructor() {}
+  chipItem = new FormControl('')
 
-  ngOnInit(): void {
-    console.log('Incoming Items, itemOptions', this.itemOptions)
+  // TODO: Implemt custom validator. This field is valid if at least one chipItems.length > 0. It looks like there
+  //  is an issue with whenthis runs as it triggers an error message indicating that this.chipItems is undefined.
+  fieldValidator () {
+    return () => {
+      console.log('validating chip field')
+      return this.chipItems.length === 0 ? {validationError: {message: "This field is required"}} : null
+    }
   }
 
-  // handlers
+  showModal = false;
+
+  constructor(private anxietyFormService: AnxietyFormService) {};
+
+  // Handlers
+  handleSelectChange() {
+    if (this.chipItem.value === 'add-item') {
+      this.showModal = true;
+    }
+  }
+
   handleAddItem() {
     // Checks that the form is valid and the item is not already in chipItems
+    // TODO: Move logic to service. Need to set up query data subscription in service
     const valid = this.chipItem.status === 'VALID' &&
       this.chipItems
       .map(item => {
@@ -38,30 +51,33 @@ export class FormChipFieldComponent implements OnInit {
         return item.value === this.chipItem.value
       })[0]
 
-      this.chipItems = [...this.chipItems, newChipItem]
+      const type = this.fieldLabel.toLowerCase()
+
+      this.anxietyFormService.addOptionItem(newChipItem, type)
       this.chipItem.reset('')
     }
   }
 
-  handleSelectChange() {
-    // watch select field for 'add-item' to add an item to the select
-    if (this.chipItem.value === 'add-item') {
-      this.showModal = true;
-    }
-  }
-
   handleRemoveChip(itemValue) {
-    this.removeItem.emit(itemValue)
+    const type = this.fieldLabel.toLowerCase()
+    this.anxietyFormService.removeOptionItem({value: itemValue, type: type})
   }
 
-  // Modal handlers
-  handleAddNewItem(event) {
-    // Emit new item information
-    this.addNewItem.emit()
-    // close modal
+  // Modal event handlers
+  handleAddNewItem(event: string) {
+    const display = event;
+    const value = display.toLowerCase().split(' ').join('-')
 
-    // reset options
+    const newChipItem = {
+      display: display,
+      value: value,
+      type: this.fieldLabel.toLowerCase()
+    }
 
+    this.anxietyFormService.addNewOptionItem(newChipItem)
+
+    this.showModal = false;
+    this.chipItem.reset('')
   }
 
   handleCloseModal() {
@@ -69,9 +85,9 @@ export class FormChipFieldComponent implements OnInit {
   }
 }
 
-
 interface ChipItem {
   display: string,
   value: string,
   id?: string
+  type?: string
 }

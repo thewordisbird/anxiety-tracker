@@ -7,13 +7,14 @@ import { sentimentMap } from './sentiment-map';
 })
 export class FormSentimentFieldComponent implements OnInit {
   // Note: Should sentiment be stored in the DB?
-  @Input() valid: boolean;
+  @Input() inValid: boolean;
   @Output() sentiment = new EventEmitter<number>()
   sentimentMap = sentimentMap;
   selectedSentiment: number = null
   constructor() { }
 
   ngOnInit(): void {
+    console.log('inValid?', this.inValid)
   }
 
   setSentiment(value: number) {
