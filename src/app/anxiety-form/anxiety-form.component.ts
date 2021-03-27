@@ -18,6 +18,7 @@ export class AnxietyFormComponent implements OnInit, OnDestroy{
   emotionOptions: Emotion[];
 
   symptomsDataSubscription: Subscription;
+  sentimentSubscription: Subscription
   emotionsDataSubscription: Subscription;
   symptomsSubscription: Subscription;
   emotionsSubscription: Subscription;
@@ -46,6 +47,11 @@ export class AnxietyFormComponent implements OnInit, OnDestroy{
         this.emotionOptions = emotionOptions
       })
 
+    this.sentimentSubscription = this.anxietyFormService.sentimentChanged$.subscribe( sentiment => {
+      this.sentiment = sentiment
+    }
+    )
+
     this.symptomsSubscription = this.anxietyFormService.symptomsChanged.subscribe(
       (symptoms: Symptom[]) => {
         this.symptoms = symptoms
@@ -62,6 +68,7 @@ export class AnxietyFormComponent implements OnInit, OnDestroy{
   ngOnDestroy() {
     // Clean up subscriptions
     this.symptomsDataSubscription.unsubscribe()
+    this.sentimentSubscription.unsubscribe()
     this.emotionsDataSubscription.unsubscribe()
     this.symptomsSubscription.unsubscribe()
     this.emotionsSubscription.unsubscribe()
@@ -70,38 +77,38 @@ export class AnxietyFormComponent implements OnInit, OnDestroy{
   initForm() {
     const date = '';
     const time = '';
-    const symptom = '';
     const thoughts = ''
+
+    this.formSubmitted = false;
 
     this.anxietyForm = new FormGroup({
       'date': new FormControl(date, Validators.required),
       'time': new FormControl(time, Validators.required),
       'thoughts': new FormControl(thoughts, Validators.required)
     })
+
+    this.anxietyForm.markAsPristine()
+    this.anxietyForm.markAsUntouched()
   }
 
   // Handlers
-  handleSetSentiment(event) {
-    this.sentiment = event
-    this.anxietyFormService.updateSentiment(event)
-  }
 
   handleClearForm() {
-    this.sentiment = null;
     this.anxietyFormService.updateSentiment(null);
     this.anxietyFormService.clearSymptoms();
     this.anxietyFormService.clearSymptoms();
-    this.formSubmitted = false;
-    this.initForm();
+    this.initForm()
   }
 
   onSubmit(){
     // console.log(new Date(this.anxietyForm.controls.date.value).toISOString())
+
     console.log('submitting', this.anxietyForm)
     if (this.anxietyForm.valid && !!this.sentiment && !!this.symptoms && !!this.emotions) {
       this.anxietyFormService.storeFormData(this.anxietyForm.value)
-      this.formSubmitted = true
       this.handleClearForm()
+    } else {
+      this.formSubmitted = true
     }
 
   }

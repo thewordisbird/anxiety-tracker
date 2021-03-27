@@ -7,6 +7,7 @@ import { DataStorageService } from '../shared/data-storage.service';
   providedIn: 'root'
 })
 export class AnxietyFormService{
+  sentimentChanged$ = new Subject<number>();
   symptomsChanged = new Subject<Symptom[]>();
   emotionsChanged = new Subject<Emotion[]>();
 
@@ -14,15 +15,13 @@ export class AnxietyFormService{
   private symptoms: Symptom[] = [];
   private emotions: Emotion[] = [];
 
-  private symptomsQuerySubscription: Subscription;
-  private symptomQueryResult: Symptom;
-
   constructor(
     private dataStorageService: DataStorageService
   ) {}
 
   updateSentiment(sentiment: number) {
     this.sentiment = sentiment;
+    this.sentimentChanged$.next(sentiment)
   }
 
   updateSymptoms(symptom: Symptom) {

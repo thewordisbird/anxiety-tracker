@@ -37,7 +37,7 @@ export class FormChipFieldComponent {
   handleAddItem() {
     // Checks that the form is valid and the item is not already in chipItems
     // TODO: Move logic to service. Need to set up query data subscription in service
-    const valid = this.chipItem.status === 'VALID' &&
+    const valid = this.chipItem.value !== '' &&
       this.chipItems
       .map(item => {
         return item.value !== this.chipItem.value
