@@ -1,7 +1,10 @@
-import {Component} from '@angular/core';
+import {Component, OnChanges, OnInit} from '@angular/core';
 import {animate, state, style, transition, trigger} from '@angular/animations';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
+import { DataStorageService } from '../shared/data-storage.service';
+import { AnxietyEvent } from '../models'
+
 
 @Component({
   selector: 'app-anxiety-table',
@@ -15,27 +18,39 @@ import { Observable } from 'rxjs';
     ]),
   ],
 })
-export class AnxietyTableComponent {
-  columnsToDisplay = ['date', 'time', 'level'];
+export class AnxietyTableComponent implements OnInit, OnChanges{
+  displayColumns : string[] = ['toggle', 'date', 'time', 'level']
+  dataColumns: string[] = ['date', 'time', 'level']
   expandedElement: AnxietyEvent | null;
+  expandedElements: {};
+  anxietyEvents = []
 
-  // Firestore Collections
-  private anxietyEventCollection: AngularFirestoreCollection<AnxietyEvent>;
+  constructor (private dataStorageService: DataStorageService) {
+    // TODO: Need to figure out better way to get datestring. currently require date field type to be any
+    this.dataStorageService.anxietyEvents.subscribe(anxietyEvents => {
+      this.anxietyEvents = anxietyEvents.map(element => {
+        const eventDate = new Date(element.date.seconds * 1000);
+        return {...element, date: eventDate.toDateString()}
+      });
 
-  // Firestore Collection Observables
-  anxietyEvents: Observable<any[]>;
-
-  constructor (private firestore: AngularFirestore) {
-    // Initialize Firestore
-    this.anxietyEventCollection = firestore.collection<AnxietyEvent>('anxietyEvents');
-    this.anxietyEvents = this.anxietyEventCollection.valueChanges();
+      console.log(this.anxietyEvents)
+      this.expandedElements = anxietyEvents.reduce((acc, cur) => {
+        return {...acc, [cur.id]: false}
+      }, {})
+    })
   };
-}
 
-interface AnxietyEvent {
-  level: number;
-  date: Date;
-  time: string;
-  symptoms: string[];
-  thoughts: string;
+  ngOnInit() {
+
+  }
+
+  ngOnChanges() {
+    console.log('changes', this.expandedElement)
+  }
+
+  toggleExpand(anxietyEvent: AnxietyEvent) {
+    this.expandedElements[anxietyEvent.id] = !this.expandedElements[anxietyEvent.id];
+    this.expandedElement = this.expandedElement  === anxietyEvent ? null : anxietyEvent
+  }
+
 }

@@ -11,8 +11,9 @@ export interface Emotion {
 }
 
 export interface AnxietyEvent {
+  id: string;
   level: number;
-  date: Date;
+  date: any;
   time: string;
   symptoms: Symptom[];
   emotions: Emotion[];

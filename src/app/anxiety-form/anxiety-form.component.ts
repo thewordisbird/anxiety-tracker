@@ -17,7 +17,6 @@ export class AnxietyFormComponent implements OnInit, OnDestroy{
   symptomOptions: Symptom[];
   emotionOptions: Emotion[];
 
-  symptomsDataSubscription: Subscription;
   sentimentSubscription: Subscription
   emotionsDataSubscription: Subscription;
   symptomsSubscription: Subscription;
@@ -35,6 +34,7 @@ export class AnxietyFormComponent implements OnInit, OnDestroy{
    ) {};
 
   ngOnInit() {
+    console.log('ngoninit')
     this.initForm()
 
     this.dataStorageService.fetchSymptoms()
@@ -47,31 +47,28 @@ export class AnxietyFormComponent implements OnInit, OnDestroy{
         this.emotionOptions = emotionOptions
       })
 
-    this.sentimentSubscription = this.anxietyFormService.sentimentChanged$.subscribe( sentiment => {
-      this.sentiment = sentiment
-    }
-    )
+    this.sentimentSubscription = this.anxietyFormService.sentimentChanged$
+      .subscribe( sentiment => {
+        this.sentiment = sentiment
+      })
 
-    this.symptomsSubscription = this.anxietyFormService.symptomsChanged.subscribe(
-      (symptoms: Symptom[]) => {
+    this.symptomsSubscription = this.anxietyFormService.symptomsChanged
+      .subscribe((symptoms: Symptom[]) => {
         this.symptoms = symptoms
-      }
-    )
+      })
 
-    this.emotionsSubscription = this.anxietyFormService.emotionsChanged.subscribe(
-      (emotions: Emotion[]) => {
+    this.emotionsSubscription = this.anxietyFormService.emotionsChanged
+      .subscribe((emotions: Emotion[]) => {
         this.emotions = emotions
-      }
-    )
+      })
   }
 
   ngOnDestroy() {
     // Clean up subscriptions
-    this.symptomsDataSubscription.unsubscribe()
-    this.sentimentSubscription.unsubscribe()
-    this.emotionsDataSubscription.unsubscribe()
-    this.symptomsSubscription.unsubscribe()
-    this.emotionsSubscription.unsubscribe()
+    this.unsubscribe(this.sentimentSubscription)
+    this.unsubscribe(this.emotionsDataSubscription)
+    this.unsubscribe(this.symptomsSubscription)
+    this.unsubscribe(this.emotionsSubscription)
   }
 
   initForm() {
@@ -110,7 +107,16 @@ export class AnxietyFormComponent implements OnInit, OnDestroy{
     } else {
       this.formSubmitted = true
     }
+  }
 
+  // Helpers
+  unsubscribe(subscription: Subscription) {
+    // handles unsubscription cases when a subscription has not been set before navigation and is undefined
+    try {
+      subscription.unsubscribe()
+    } catch (err) {
+      return
+    }
   }
 }
 

@@ -49,3 +49,18 @@ tr.example-element-row:not(.example-expanded-row):active {
 .example-element-description-attribution {
   opacity: 0.5;
 }
+
+.table-control {
+  cursor: pointer;
+}
+
+.expand-section {
+  border-bottom: solid 1px lightgray;
+  padding: 12px;
+}
+
+.expand-section-title {
+  margin-bottom: 6px;
+}
+
+

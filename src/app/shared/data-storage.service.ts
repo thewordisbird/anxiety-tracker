@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
-import { Observable } from 'rxjs';
+import { Observable, pipe } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { Symptom, Emotion, AnxietyEvent } from '../models';
 @Injectable({
   providedIn: 'root'
@@ -31,7 +32,8 @@ export class DataStorageService {
     this.emotions = this.emotionsCollection.valueChanges();
 
     this.anxietyEventsCollection = afs.collection<AnxietyEvent>('anxietyEvents')
-    this.anxietyEvents = this.anxietyEventsCollection.valueChanges()
+    this.anxietyEvents = this.anxietyEventsCollection
+    .valueChanges({idField: 'id'})
 
     // this.symptomValue$ = new Subject();
     // this.symptom$ = this.symptomValue$.pipe(
