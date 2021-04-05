@@ -1,0 +1,8 @@
+<div class="table-chip-display">
+  <h4 class="table-chip-display-title">Symptoms:</h4>
+  <mat-chip-list #chipList aria-label="symptoms">
+    <mat-chip *ngFor="let item of data" [selectable]="true" [removable]="false">
+    {{item.display}}
+    </mat-chip>
+  </mat-chip-list>
+</div>

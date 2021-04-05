@@ -49,8 +49,24 @@ export class AnxietyTableComponent implements OnInit, OnChanges{
   }
 
   toggleExpand(anxietyEvent: AnxietyEvent) {
-    this.expandedElements[anxietyEvent.id] = !this.expandedElements[anxietyEvent.id];
-    this.expandedElement = this.expandedElement  === anxietyEvent ? null : anxietyEvent
+
+    if (this.expandedElement === anxietyEvent) {
+      // Case where same element is clicked. Toggle expansion
+      this.expandedElements[anxietyEvent.id] = !this.expandedElements[anxietyEvent.id];
+      this.expandedElement = null
+    } else {
+      // Case where new element is clicked
+      const currentElementId = this.expandedElement ? this.expandedElement.id : null
+      if ( currentElementId ) {
+        // Close the previous expanded element
+        this.expandedElements[currentElementId] = false;
+      }
+      this.expandedElements[anxietyEvent.id] = !this.expandedElements[anxietyEvent.id];
+      this.expandedElement = anxietyEvent
+    }
+
+
+
   }
 
 }

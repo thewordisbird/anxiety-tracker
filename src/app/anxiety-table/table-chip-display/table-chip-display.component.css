@@ -1,0 +1,8 @@
+.table-chip-display {
+  border-bottom: solid 1px lightgray;
+  padding: 12px;
+}
+
+.table-chip-display-title {
+  margin-bottom: 6px;
+}

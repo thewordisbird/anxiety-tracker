@@ -23,30 +23,9 @@
       <div class="example-element-detail"
            [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
 
-          <div class="expand-section">
-            <h4 class="expand-section-title">Symptoms:</h4>
-            <mat-chip-list #chipList aria-label="symptoms">
-              <mat-chip *ngFor="let symptom of element.symptoms" [selectable]="true" [removable]="false">
-              {{symptom.display}}
-              </mat-chip>
-            </mat-chip-list>
-          </div>
-
-          <div class="expand-section">
-            <h4 class="expand-section-title">Emotions:</h4>
-            <mat-chip-list #chipList aria-label="emotions">
-              <mat-chip *ngFor="let emotion of element.emotions" [selectable]="true" [removable]="false">
-              {{emotion.display}}
-              </mat-chip>
-            </mat-chip-list>
-          </div>
-
-          <div class="expand-section">
-            <h4 class="expand-section-title">Thoughts:</h4>
-            {{ element.thoughts }}
-          </div>
-
-
+           <app-table-chip-display title="Symptoms" [data]="element.symptoms"></app-table-chip-display>
+           <app-table-chip-display title="Emotions" [data]="element.emotions"></app-table-chip-display>
+           <app-table-paragraph-display title="Thoughts" [content]="element.thoughts"></app-table-paragraph-display>
       </div>
     </td>
   </ng-container>

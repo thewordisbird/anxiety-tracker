@@ -21,6 +21,8 @@ import { SymptomItemComponent } from './symptom-items/symptom-item/symptom-item.
 import { FormChipFieldComponent } from './anxiety-form/form-chip-field/form-chip-field.component';
 import { AddNewItemComponent } from './anxiety-form/form-chip-field/add-new-item/add-new-item.component';
 import { FormSentimentFieldComponent } from './anxiety-form/form-sentiment-field/form-sentiment-field.component';
+import { TableChipDisplayComponent } from './anxiety-table/table-chip-display/table-chip-display.component';
+import { TableParagraphDisplayComponent } from './anxiety-table/table-paragraph-display/table-paragraph-display.component'
 
 const appRoutes: Routes = [
   {
@@ -67,7 +69,9 @@ const appRoutes: Routes = [
     SymptomItemComponent,
     FormChipFieldComponent,
     AddNewItemComponent,
-    FormSentimentFieldComponent
+    FormSentimentFieldComponent,
+    TableChipDisplayComponent,
+    TableParagraphDisplayComponent
   ],
   imports: [
     BrowserModule,
