@@ -93,7 +93,7 @@ export class AnxietyFormComponent implements OnInit, OnDestroy{
   handleClearForm() {
     this.anxietyFormService.updateSentiment(null);
     this.anxietyFormService.clearSymptoms();
-    this.anxietyFormService.clearSymptoms();
+    this.anxietyFormService.clearEmotions();
     this.initForm()
   }
 

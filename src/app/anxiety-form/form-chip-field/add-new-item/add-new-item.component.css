@@ -9,13 +9,9 @@
 }
 
 .modal {
-  position: fixed;
-  top: 30%;
-  left: 35vw;
-  width: 30vw;
-  padding: 16px;
   z-index: 100;
   background: white;
+  border-radius: 0;
 }
 
 .add-new-item-input {
@@ -37,4 +33,18 @@ mat-form-field {
 .close-icon {
   float: right;
   cursor: pointer;
+}
+
+@media only screen and (min-width: 600px)  {
+  .modal {
+    position: fixed;
+    top: 30%;
+    left: 35vw;
+    width: 30vw;
+    min-width: 400px;
+    padding: 16px;
+    z-index: 100;
+    background: white;
+    border-radius: 5px;
+  }
 }

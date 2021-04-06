@@ -8,7 +8,7 @@
     [inValid]="(sentiment === null && formSubmitted)">
   </app-form-sentiment-field>
 
-  <div class="date-time-inputs">
+  <div class="field-inputs">
     <mat-form-field >
       <mat-label>Choose a date</mat-label>
       <input
@@ -45,8 +45,8 @@
     [chipItems]="emotions">
   </app-form-chip-field>
 
-  <div class="description">
-    <mat-form-field class="">
+  <div class="field-inputs">
+    <mat-form-field>
       <mat-label>Current Thoughts</mat-label>
       <textarea
         id="thoughts"
@@ -54,12 +54,15 @@
         placeholder="Ex. It makes me feel..."
         rows="4"
         matInput
-        formControlName="thoughts"></textarea>
+        formControlName="thoughts">
+      </textarea>
     </mat-form-field>
   </div>
 
+
+
   <div class="form-buttons">
-    <button type="submit" color="primary">Submit</button>
+    <button type="submit" mat-raised-button color="primary">Submit</button>
     <button type="button" mat-raised-button color="warn" (click)="handleClearForm()">Clear</button>
   </div>
 </form>

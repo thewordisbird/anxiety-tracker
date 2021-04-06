@@ -1,6 +1,6 @@
 <div class="auth-form">
   <mat-card>
-  <mat-card-title>{{ isSignInMode ? "Login" : "Register" }}</mat-card-title>
+    <mat-card-title>{{ isSignInMode ? "Login" : "Register" }}</mat-card-title>
     <mat-card-content *ngIf="!isLoading">
       <mat-card *ngIf="error" class="form-error-message">{{ error }}</mat-card>
       <form #authForm="ngForm" (ngSubmit)="onSubmit(authForm)" >
@@ -15,14 +15,13 @@
         </mat-form-field>
         <button mat-raised-button color="primary">{{ isSignInMode ? "Login" : "Register" }}</button>
       </form>
-
-  </mat-card-content>
-  <mat-card-footer *ngIf="!isLoading">
-    {{ isSignInMode ? "Not Registered?" : "Already Registered?" }} <a href="#" (click)="onSwitchMode($event)">{{ isSignInMode ? "Register Now!" : "Login!" }}</a>
-  </mat-card-footer>
-  <mat-card-content class="auth-loading" *ngIf="isLoading">
-    <mat-spinner></mat-spinner>
-  </mat-card-content>
-</mat-card>
+    </mat-card-content>
+    <mat-card-footer *ngIf="!isLoading">
+      {{ isSignInMode ? "Not Registered?" : "Already Registered?" }} <a href="#" (click)="onSwitchMode($event)">{{ isSignInMode ? "Register Now!" : "Login!" }}</a>
+    </mat-card-footer>
+    <mat-card-content class="auth-loading" *ngIf="isLoading">
+      <mat-spinner></mat-spinner>
+    </mat-card-content>
+  </mat-card>
 </div>
 

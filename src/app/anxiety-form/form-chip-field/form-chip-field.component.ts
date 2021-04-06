@@ -82,6 +82,7 @@ export class FormChipFieldComponent {
 
   handleCloseModal() {
     this.showModal = false;
+    this.chipItem.reset('')
   }
 }
 

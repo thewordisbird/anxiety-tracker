@@ -1,12 +1,13 @@
-
-ul {
-  padding: 0;
-  margin: 12px;
-  box-sizing: border-box;
+.sentiment-label {
+  font: 400 14px/20px Roboto, "Helvetica Neue", sans-serif;
+  margin: 12px 0 0 6px;
+  /* Need to find actual label color */
+  color: gray;
 }
 
-li {
-  display: inline-block;
+.sentiment-icons {
+  display: flex;
+  justify-content: space-between;
 }
 
 .sentiment-icons {
@@ -22,14 +23,6 @@ li {
 
 .sentiment-icon-active {
   opacity: 100%;
-}
-
-
-.sentiment-label {
-  font: 400 14px/20px Roboto, "Helvetica Neue", sans-serif;
-  margin: 12px 0 0 6px;
-  /* Need to find actual label color */
-  color: gray;
 }
 
 .sentiment-invalid {

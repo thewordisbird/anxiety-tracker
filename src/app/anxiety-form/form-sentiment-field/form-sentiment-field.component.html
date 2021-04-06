@@ -2,15 +2,15 @@
   <div class="sentiment-label">
     <p [ngClass]="{'sentiment-invalid': inValid}">My Anxiety Level is:* <span *ngIf="selectedSentiment !== null">{{ sentimentMap[selectedSentiment].description}}</span></p>
   </div>
-  <ul>
-    <li *ngFor="let s of sentimentMap; let i=index">
+  <div class="sentiment-icons" >
+    <div class="sentiment-icon" *ngFor="let s of sentimentMap; let i=index">
       <span
         class="material-icons sentiment-icons"
         [ngClass]="{'sentiment-icon-active': selectedSentiment === i}"
         (click)="setSentiment(i)">
         {{ s.svgName }}
       </span>
-    </li>
-  </ul>
+    </div>
+  </div>
 </div>
 

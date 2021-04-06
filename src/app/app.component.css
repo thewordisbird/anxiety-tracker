@@ -1,13 +1,16 @@
 .container {
   width: 100%;
   min-height: calc(100vh - 70px);
+  margin: auto
 }
 .sidenav-nav {
   width: 30%
 }
 
 @media only screen and (min-width: 600px)  {
-
+  .container {
+    max-width: 800px;
+  }
 }
 
 

@@ -2,67 +2,29 @@ form {
   display: flex;
   flex-direction: column;
   align-items: center;
+  height: calc(100vh - 70px);
+}
+
+app-form-sentiment-field {
+  padding: 0 0 6px 6px ;
   width: 100%;
-  margin: 12px;
-  padding: 6px;
-  border: 1px solid lightblue;
-  border-radius: 6px;
+  box-sizing: border-box;
+}
+
+.field-inputs {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
 }
 
 mat-form-field {
-  margin: 6px;
-  width: 100%;
+  padding: 12px;
 }
 
-mat-slider {
-  margin: 6px;
+app-form-chip-field {
+  padding: 0 0 6px 6px ;
   width: 100%;
-}
-
-mat-card {
-  display: flex;
-  justify-content: space-between;
-  margin: 6px;
-  width: 95%;
-}
-
-
-.quantifier {
-  display: flex;
-  align-items: center;
-  width: 100%;
-}
-.quantifier-description {
-  width: 100%;
-}
-
-.quantifier-slider {
-  width: 100%;
-}
-
-.date-time-inputs {
-  display: flex;
-  align-items: center;
-  width: 100%;
-}
-
-.add-symptoms {
-  display: flex;
-  align-items: center;
-  width: 100%;
-}
-
-.list-symptoms {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-}
-
-.description {
-  display: flex;
-  align-items: center;
-  width: 100%;
+  box-sizing: border-box;
 }
 
 .form-buttons {
@@ -75,15 +37,27 @@ mat-card {
   margin: 6px;
 }
 
+@media only screen and (min-width: 600px)  {
+  form {
+    height: unset;
+    margin: 12px;
+    padding: 6px;
+    border: 1px solid lightblue;
+    border-radius: 6px;
+  }
 
-app-form-chip-field {
-  margin: auto;
-  width: inherit;
-  box-sizing: border-box;
-}
+  app-form-sentiment-field {
+    width: inherit;
+    align-self: flex-start;
+  }
 
-app-form-sentiment-field {
-  margin: auto;
-  width: inherit;
-  box-sizing: border-box;
+  .field-inputs {
+    align-items: center;
+    flex-direction: row;
+  }
+
+  mat-form-field {
+    margin: 6px;
+    width: inherit;
+  }
 }
