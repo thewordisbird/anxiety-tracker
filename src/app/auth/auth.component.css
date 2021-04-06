@@ -1,7 +1,5 @@
 .auth-form {
-  margin: auto;
-  margin-top: 24px;
-  width: 400px;
+  width: 100%;
 }
 
 mat-form-field {
@@ -32,4 +30,12 @@ mat-card.form-error-message {
   display: flex;
   flex-flow: row;
   justify-content: center;
+}
+
+@media only screen and (min-width: 600px)  {
+  .auth-form {
+    margin: auto;
+    margin-top: 24px;
+    width: 400px;
+  }
 }

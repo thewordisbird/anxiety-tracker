@@ -1,22 +1,12 @@
-/* mat-form-field {
-  margin: 12px 12px 0 0;
-} */
-
-/* .container {
-  margin: auto;
+.container {
   width: 100%;
+  min-height: calc(100vh - 70px);
 }
-*/
 .sidenav-nav {
   width: 30%
 }
 
 @media only screen and (min-width: 600px)  {
-  /* .container {
-    width: 70%;
-    max-width: 800px;
-  } */
-
 
 }
 
