@@ -1,0 +1,12 @@
+<mat-toolbar color="primary">
+  <button class="menu-button" mat-icon-button aria-label="Display sidenav">
+    <mat-icon (click)="onToggleNav()">menu</mat-icon>
+  </button>
+  <span>Anxiety Tracker</span>
+  <span class="toolbar-spacer"></span>
+  <div class="nav-buttons">
+    <button class="nav-button" mat-button routerLink="/add" routerLinkActive="active">Add Event</button>
+    <button class="nav-button" mat-button routerLink="/events" routerLinkActive="active">View Events</button>
+    <button class="nav-button" mat-button (click)="onLogout()">Logout</button>
+  </div>
+</mat-toolbar>

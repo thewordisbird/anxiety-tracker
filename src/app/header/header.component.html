@@ -1,5 +1,9 @@
 <mat-toolbar color="primary">
   <div class="nav">
+    <div class="mobile-nav-toggle">
+      <button mat-icon-button (click)="sidenav.toggle()"><mat-icon>menu</mat-icon></button>
+    </div>
+
     <div class="title">
       Anxiety Tracking
     </div>
@@ -7,7 +11,16 @@
       <button class="nav-button" mat-button routerLink="/add" routerLinkActive="active">Add Event</button>
       <button class="nav-button" mat-button routerLink="/events" routerLinkActive="active">View Events</button>
       <button class="nav-button" mat-button (click)="handleSignOut()">Logout</button>
-
     </div>
   </div>
 </mat-toolbar>
+
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav #sidenav mode="over" [(opened)]="opened">Side Nav</mat-sidenav>
+  <mat-nav-list *ngIf="isAuthenticated">
+    <a mat-list-item routerLink="/add">Home</a>
+    <a mat-list-item routerLink="/events">Home</a>
+  </mat-nav-list>
+</mat-sidenav-container>
+
+

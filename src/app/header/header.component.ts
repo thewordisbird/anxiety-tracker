@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { AuthService } from '../auth/auth.service';
 
@@ -10,6 +10,8 @@ import { AuthService } from '../auth/auth.service';
 export class HeaderComponent  {
   isAuthenticated = false;
   private userSub: Subscription
+  @Output() sideNaveToggle = new EventEmitter();
+  opened: boolean;
 
   constructor(
     private authService: AuthService
@@ -24,5 +26,9 @@ export class HeaderComponent  {
 
   handleSignOut() {
     this.authService.signOut()
+  }
+
+  onToggleSideNav = () => {
+    this.sideNaveToggle.emit()
   }
 }

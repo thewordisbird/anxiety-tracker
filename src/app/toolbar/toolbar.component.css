@@ -1,0 +1,21 @@
+.toolbar-spacer {
+  flex: 1 1 auto;
+}
+
+.menu-button {
+  display: unset;
+}
+
+.nav-buttons {
+  display: none;
+}
+
+@media only screen and (min-width: 600px)  {
+  .menu-button {
+    display: none;
+  }
+
+  .nav-buttons {
+    display: unset;
+  }
+}

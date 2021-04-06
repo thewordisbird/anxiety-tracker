@@ -1,16 +1,52 @@
 .nav {
   display: flex;
-  justify-content: space-between;
   width: 100%;
   max-width: 800px;
   margin: auto;
 }
 
-.nav-buttons {
-  display: flex;
-  justify-content: flex-end;
+.mobile-nav-toggle {
+  margin-right: 12px;
 }
 
-.nav-button {
- border-radius: 0;
+.title {
+  margin-top: 4px;
+}
+
+/* Hide Toolbar Navigation */
+.nav-buttons {
+  display: none;
+}
+
+.sidenav-container {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 56px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+
+
+
+@media only screen and (min-width: 600px)  {
+  .nav {
+    justify-content: space-between;
+  }
+
+  .nav-buttons {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .nav-button {
+   border-radius: 0;
+  }
+
+  /* Hide mobile nav toggle */
+  .mobile-nav-toggle {
+    display: none;
+  }
 }

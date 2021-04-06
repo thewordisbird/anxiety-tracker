@@ -22,7 +22,10 @@ import { FormChipFieldComponent } from './anxiety-form/form-chip-field/form-chip
 import { AddNewItemComponent } from './anxiety-form/form-chip-field/add-new-item/add-new-item.component';
 import { FormSentimentFieldComponent } from './anxiety-form/form-sentiment-field/form-sentiment-field.component';
 import { TableChipDisplayComponent } from './anxiety-table/table-chip-display/table-chip-display.component';
-import { TableParagraphDisplayComponent } from './anxiety-table/table-paragraph-display/table-paragraph-display.component'
+import { TableParagraphDisplayComponent } from './anxiety-table/table-paragraph-display/table-paragraph-display.component';
+import { NavigationComponent } from './navigation/navigation.component';
+import { LayoutComponent } from './layout/layout.component';
+import { ToolbarComponent } from './toolbar/toolbar.component'
 
 const appRoutes: Routes = [
   {
@@ -46,7 +49,7 @@ const appRoutes: Routes = [
   },
   {
     path: 'test',
-    component: FormSentimentFieldComponent
+    component: NavigationComponent
   },
   {
     path: '**',
@@ -71,7 +74,10 @@ const appRoutes: Routes = [
     AddNewItemComponent,
     FormSentimentFieldComponent,
     TableChipDisplayComponent,
-    TableParagraphDisplayComponent
+    TableParagraphDisplayComponent,
+    NavigationComponent,
+    LayoutComponent,
+    ToolbarComponent
   ],
   imports: [
     BrowserModule,
