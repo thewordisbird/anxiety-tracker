@@ -25,7 +25,8 @@ import { TableChipDisplayComponent } from './anxiety-table/table-chip-display/ta
 import { TableParagraphDisplayComponent } from './anxiety-table/table-paragraph-display/table-paragraph-display.component';
 import { NavigationComponent } from './navigation/navigation.component';
 import { LayoutComponent } from './layout/layout.component';
-import { ToolbarComponent } from './toolbar/toolbar.component'
+import { ToolbarComponent } from './toolbar/toolbar.component';
+import { LogoutComponent } from './auth/logout/logout.component'
 
 const appRoutes: Routes = [
   {
@@ -48,9 +49,13 @@ const appRoutes: Routes = [
     canActivate: [AuthRequired]
   },
   {
-    path: 'test',
-    component: NavigationComponent
+    path: 'logout',
+    component: LogoutComponent
   },
+  // {
+  //   path: 'test',
+  //   component: LogoutComponent
+  // },
   {
     path: '**',
     redirectTo: 'auth',
@@ -77,7 +82,8 @@ const appRoutes: Routes = [
     TableParagraphDisplayComponent,
     NavigationComponent,
     LayoutComponent,
-    ToolbarComponent
+    ToolbarComponent,
+    LogoutComponent
   ],
   imports: [
     BrowserModule,
