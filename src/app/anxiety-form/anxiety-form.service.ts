@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Subject, Subscription } from 'rxjs';
-import { AnxietyEvent, Emotion, Symptom } from '../models';
+import { AnxietyEvent, Emotion, FsUser, Symptom } from '../models';
 import { DataStorageService } from '../shared/data-storage.service';
 
 @Injectable({
@@ -15,19 +15,30 @@ export class AnxietyFormService{
   private symptoms: Symptom[] = [];
   private emotions: Emotion[] = [];
 
+  user: FsUser;
+
   constructor(
     private dataStorageService: DataStorageService
-  ) {}
+  ) {
+    this.dataStorageService.user.subscribe(user => {
+      console.log('User info in anxiety form service', user)
+      this.user = user
+    })
+
+
+  }
 
   updateSentiment(sentiment: number) {
+    console.log('updateSentiment', sentiment)
     this.sentiment = sentiment;
     this.sentimentChanged$.next(sentiment)
   }
 
   updateSymptoms(symptom: Symptom) {
+    console.log('updateSymptoms', symptom)
     this.symptoms.push(symptom)
     this.symptomsChanged.next(this.symptoms.slice())
-    console.log('symptoms', this.symptoms)
+
   }
 
   updateEmotions(emotion: Emotion) {
@@ -99,7 +110,7 @@ export class AnxietyFormService{
     this.updateEmotions(emotion)
   }
 
-  addOptionItem(item, type) {
+  addOptionItem(item: Symptom | Emotion, type: string) {
     switch (type) {
       case 'symptom':
         this.updateSymptoms(item)

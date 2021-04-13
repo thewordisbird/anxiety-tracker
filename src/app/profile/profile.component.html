@@ -1,1 +1,32 @@
-<p>profile works!</p>
+<div class="profile">
+  <mat-card>
+    <mat-card-title>Profile</mat-card-title>
+    <mat-card-content>
+      <mat-card [ngClass]="error ? 'form-error-message' : 'form-success-message'"*ngIf="message">{{ message }}</mat-card>
+      <p><span class="profile-field">Email: </span>{{ currentUser.email }}</p>
+      <button *ngIf="!changePassword" mat-raised-button color="primary" type="button" (click)="onChangePassword()">Change Password</button>
+    </mat-card-content>
+    <mat-card-content *ngIf="changePassword">
+      <form #form [formGroup]="changePasswordForm" (ngSubmit)="onSubmit(form)">
+        <mat-form-field>
+          <input matInput type="password" placeholder="New password" formControlName="password" required>
+          <mat-error *ngIf="changePasswordForm.hasError('required', 'password')">
+            Please enter your newpassword
+          </mat-error>
+        </mat-form-field>
+        <br/>
+        <mat-form-field>
+          <input matInput type="password" placeholder="Confirm password" formControlName="confirmPassword" [errorStateMatcher]="matcher">
+            <mat-error *ngIf="changePasswordForm.hasError('notSame')">
+            Passwords do not match
+          </mat-error>
+        </mat-form-field>
+        <br/>
+        <button mat-raised-button color="primary">Set Password</button>
+        <button mat-raised-button color="warn" type="button" (click)="onCancel()">Cancel</button>
+      </form>
+
+
+    </mat-card-content>
+  </mat-card>
+</div>

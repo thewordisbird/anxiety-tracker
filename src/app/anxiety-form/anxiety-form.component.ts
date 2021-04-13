@@ -2,7 +2,7 @@ import { Validators } from '@angular/forms';
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { DataStorageService } from '../shared/data-storage.service';
-import { Symptom, Emotion, AnxietyEvent } from '../models';
+import { Symptom, Emotion } from '../models';
 import { AnxietyFormService } from './anxiety-form.service';
 import { Subscription } from 'rxjs';
 
@@ -18,7 +18,6 @@ export class AnxietyFormComponent implements OnInit, OnDestroy{
   emotionOptions: Emotion[];
 
   sentimentSubscription: Subscription
-  emotionsDataSubscription: Subscription;
   symptomsSubscription: Subscription;
   emotionsSubscription: Subscription;
 
@@ -28,24 +27,19 @@ export class AnxietyFormComponent implements OnInit, OnDestroy{
 
   formSubmitted = false;
 
- constructor (
-   private dataStorageService: DataStorageService,
-   private anxietyFormService: AnxietyFormService
-   ) {};
+  constructor (
+    private anxietyFormService: AnxietyFormService,
+    private dataStorageService: DataStorageService
+  ) {};
 
   ngOnInit() {
-    console.log('ngoninit')
     this.initForm()
 
-    this.dataStorageService.fetchSymptoms()
-      .subscribe(symptomOptions => {
-        this.symptomOptions = symptomOptions
-      })
-
-    this.dataStorageService.fetchEmotions()
-      .subscribe(emotionOptions => {
-        this.emotionOptions = emotionOptions
-      })
+    // TODO: Move to service
+    this.dataStorageService.user.subscribe(user => {
+      this.symptomOptions = user.symptoms
+      this.emotionOptions = user.emotions
+    })
 
     this.sentimentSubscription = this.anxietyFormService.sentimentChanged$
       .subscribe( sentiment => {
@@ -66,7 +60,6 @@ export class AnxietyFormComponent implements OnInit, OnDestroy{
   ngOnDestroy() {
     // Clean up subscriptions
     this.unsubscribe(this.sentimentSubscription)
-    this.unsubscribe(this.emotionsDataSubscription)
     this.unsubscribe(this.symptomsSubscription)
     this.unsubscribe(this.emotionsSubscription)
   }
@@ -89,7 +82,6 @@ export class AnxietyFormComponent implements OnInit, OnDestroy{
   }
 
   // Handlers
-
   handleClearForm() {
     this.anxietyFormService.updateSentiment(null);
     this.anxietyFormService.clearSymptoms();
@@ -98,9 +90,6 @@ export class AnxietyFormComponent implements OnInit, OnDestroy{
   }
 
   onSubmit(){
-    // console.log(new Date(this.anxietyForm.controls.date.value).toISOString())
-
-    console.log('submitting', this.anxietyForm)
     if (this.anxietyForm.valid && !!this.sentiment && !!this.symptoms && !!this.emotions) {
       this.anxietyFormService.storeFormData(this.anxietyForm.value)
       this.handleClearForm()

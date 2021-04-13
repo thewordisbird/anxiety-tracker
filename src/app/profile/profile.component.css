@@ -1,0 +1,17 @@
+mat-card.form-success-message {
+  background: rgba(0, 128, 0, .50 );
+  color: #fff;
+}
+
+mat-card.form-error-message {
+  background: rgba(255, 0, 0, .50 );
+  color: #fff;
+}
+
+.profile-field {
+  font-weight: bold;
+}
+
+button {
+  margin-right: 12px;
+}

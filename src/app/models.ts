@@ -1,3 +1,5 @@
+import { AngularFirestoreCollection } from "@angular/fire/firestore";
+
 export interface Symptom {
   display: string;
   value: string;
@@ -18,4 +20,12 @@ export interface AnxietyEvent {
   symptoms: Symptom[];
   emotions: Emotion[];
   thoughts: string;
+}
+
+export interface FsUser {
+  id?: string;
+  email: string;
+  symptoms?: Symptom[];
+  emotions?: Emotion[]
+  events?: AngularFirestoreCollection<AnxietyEvent>
 }

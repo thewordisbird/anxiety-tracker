@@ -2,18 +2,18 @@ import { HttpClient, HttpErrorResponse, HttpParams } from "@angular/common/http"
 import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
 import { BehaviorSubject, throwError } from "rxjs";
-import { catchError, tap } from "rxjs/operators";
+import { catchError, take, tap } from "rxjs/operators";
 import { environment } from "src/environments/environment";
 import {User} from './user.model';
 
 export interface AuthResponseData {
-  kind: string,
-  idToken: string,
+  kind: string;
+  idToken: string;
   email: string,
-  refreshToken: string,
-  expiresIn: string,
-  localId: string,
-  registered?: boolean
+  refreshToken: string;
+  expiresIn: string;
+  localId: string;
+  registered?: boolean;
 }
 
 @Injectable({providedIn: 'root'})
@@ -23,6 +23,7 @@ export class AuthService{
   private tokenExpTimer: any;
 
   constructor (
+    // private dataStorageService: DataStorageService,
     private http: HttpClient,
     private router: Router
   ) {};
@@ -36,9 +37,12 @@ export class AuthService{
         password: password,
         returnSecureToken: true
       }
-    ).pipe(catchError(this.handleError), tap(resp => {
-      this.handleAuth(resp.email, resp.localId, resp.idToken, +resp.expiresIn)
-    }))
+    ).pipe(
+      catchError(this.handleError),
+      tap(resp => {
+        this.handleAuth(resp.email, resp.localId, resp.idToken, +resp.expiresIn);
+      })
+    )
   }
 
   signIn(email: string, password: string) {
@@ -48,6 +52,29 @@ export class AuthService{
       {
         email: email,
         password: password,
+        returnSecureToken: true
+      }
+    ).pipe(
+      catchError(this.handleError),
+      tap(resp => {
+        this.handleAuth(resp.email, resp.localId, resp.idToken, +resp.expiresIn)
+      })
+    )
+  }
+
+  changePassword(newPassword:string) {
+    console.log('changing pw')
+    const endpoint = `https://identitytoolkit.googleapis.com/v1/accounts:update?key=${environment.firebase.apiKey}`
+    let currentUser: User;
+    this.user.pipe(
+      take(1)
+    ).subscribe(user => currentUser = user)
+
+    return this.http.post<AuthResponseData>(
+      endpoint,
+      {
+        idToken: currentUser.token,
+        password: newPassword,
         returnSecureToken: true
       }
     ).pipe(catchError(this.handleError), tap(resp => {
@@ -65,6 +92,7 @@ export class AuthService{
       _token: string,
       _tokenExpDate: string
     } = JSON.parse(localStorage.getItem('userData'));
+
     if (!userData) {
       return;
     }
@@ -120,7 +148,6 @@ export class AuthService{
       case 'INVALID_PASSWORD':
         errorMessage = 'This password is not correct';
     }
-
     return throwError(errorMessage);
   }
 
@@ -130,6 +157,7 @@ export class AuthService{
     token: string,
     expiresIn: number
   ) {
+    console.log('handleAuth')
     const expDate = new Date(
       new Date().getTime() + expiresIn * 1000
     );
