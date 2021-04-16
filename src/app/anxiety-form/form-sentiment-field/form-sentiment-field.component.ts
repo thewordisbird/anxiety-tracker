@@ -1,5 +1,4 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { AnxietyFormService } from '../anxiety-form.service';
 import { sentimentMap } from './sentiment-map';
 @Component({
@@ -7,28 +6,20 @@ import { sentimentMap } from './sentiment-map';
   templateUrl: './form-sentiment-field.component.html',
   styleUrls: ['./form-sentiment-field.component.css']
 })
-export class FormSentimentFieldComponent implements OnInit, OnDestroy {
+export class FormSentimentFieldComponent {
   // Note: Should sentiment be stored in the DB?
-  @Input() inValid: boolean;
+  @Input() submitted: boolean;
+  @Output() isValid = new EventEmitter<boolean>(false);
+
   sentimentMap = sentimentMap;
-  selectedSentiment: number = null
 
-  sentimentSubscription: Subscription;
+  constructor(private anxietyFormService: AnxietyFormService) {}
 
-  constructor(private anxietyFormService: AnxietyFormService) { }
-
-  ngOnInit(): void {
-    console.log('inValid?', this.inValid)
-    this.sentimentSubscription = this.anxietyFormService.sentimentChanged$.subscribe( sentiment => {
-      this.selectedSentiment = sentiment
-    })
-  }
-
-  ngOnDestroy(): void {
-    this.sentimentSubscription.unsubscribe()
-  }
+  // Service Subjects. Consumed by template using async pipe
+  sentiment = this.anxietyFormService.sentimentChanged$
 
   setSentiment(value: number) {
     this.anxietyFormService.updateSentiment(value);
+    this.isValid.emit(true)
   }
 }

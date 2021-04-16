@@ -1,5 +1,5 @@
 import { Component, OnDestroy } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, FormGroupDirective, NgForm, ValidatorFn, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, FormGroupDirective, NgForm, Validators } from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material/core';
 import { Subscription } from 'rxjs';
 import { AuthService } from '../auth/auth.service';
@@ -9,6 +9,7 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
   isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
     const invalidCtrl = !!(control && control.invalid && control.parent.dirty);
     const invalidParent = !!(control && control.parent && control.parent.invalid && control.parent.dirty);
+    console.log('errorstatematcher', (invalidCtrl || invalidParent))
     return (invalidCtrl || invalidParent);
   }
 }
@@ -41,13 +42,14 @@ export class ProfileComponent implements OnDestroy{
     this.userSub.unsubscribe()
   }
 
+  // Validators
   checkPasswords(group: FormGroup) { // here we have the 'passwords' group
     let pass = group.controls.password.value;
     let confirmPass = group.controls.confirmPassword.value;
-
     return pass === confirmPass ? null : { notSame: true }
   }
 
+  // Handlers
   onChangePassword() {
     this.changePassword = true
   }

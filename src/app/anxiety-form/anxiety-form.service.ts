@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Subject, Subscription } from 'rxjs';
+import { BehaviorSubject, Subject, Subscription } from 'rxjs';
 import { AnxietyEvent, Emotion, FsUser, Symptom } from '../models';
 import { DataStorageService } from '../shared/data-storage.service';
 
@@ -7,6 +7,8 @@ import { DataStorageService } from '../shared/data-storage.service';
   providedIn: 'root'
 })
 export class AnxietyFormService{
+  // submitted = new BehaviorSubject<boolean>(false)
+
   sentimentChanged$ = new Subject<number>();
   symptomsChanged = new Subject<Symptom[]>();
   emotionsChanged = new Subject<Emotion[]>();
@@ -16,6 +18,8 @@ export class AnxietyFormService{
   private emotions: Emotion[] = [];
 
   user: FsUser;
+
+
 
   constructor(
     private dataStorageService: DataStorageService
@@ -123,6 +127,12 @@ export class AnxietyFormService{
     }
 
   }
+
+  // formSubmitted(status:boolean) {
+  //   this.submitted.subscribe(s => console.log('start submit status', s ))
+
+  //   this.submitted.next(status)
+  // }
 
   storeFormData(formData) {
     const newAnxietyEvent: AnxietyEvent = {

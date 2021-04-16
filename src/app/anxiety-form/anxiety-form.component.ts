@@ -1,10 +1,11 @@
-import { Validators } from '@angular/forms';
+import { FormGroupDirective, Validators } from '@angular/forms';
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { DataStorageService } from '../shared/data-storage.service';
 import { Symptom, Emotion } from '../models';
 import { AnxietyFormService } from './anxiety-form.service';
 import { Subscription } from 'rxjs';
+import { env } from 'process';
 
 @Component({
   selector: 'app-anxiety-form',
@@ -25,12 +26,16 @@ export class AnxietyFormComponent implements OnInit, OnDestroy{
   symptoms: Symptom[] = [];
   emotions: Emotion[] = [];
 
-  formSubmitted = false;
+  sentimentValid: boolean = false
+
+  formSubmitted: boolean = false;
+
 
   constructor (
     private anxietyFormService: AnxietyFormService,
     private dataStorageService: DataStorageService
-  ) {};
+  ) {
+  };
 
   ngOnInit() {
     this.initForm()
@@ -69,6 +74,7 @@ export class AnxietyFormComponent implements OnInit, OnDestroy{
     const time = '';
     const thoughts = ''
 
+    // this.anxietyFormService.formSubmitted(false);
     this.formSubmitted = false;
 
     this.anxietyForm = new FormGroup({
@@ -82,18 +88,29 @@ export class AnxietyFormComponent implements OnInit, OnDestroy{
   }
 
   // Handlers
-  handleClearForm() {
+  onSentimentValid(event) {
+    this.sentimentValid = event;
+  }
+
+  handleClearForm(formDirective: FormGroupDirective) {
     this.anxietyFormService.updateSentiment(null);
     this.anxietyFormService.clearSymptoms();
     this.anxietyFormService.clearEmotions();
-    this.initForm()
+
+    // Clear and reset form
+    formDirective.resetForm();
+    this.anxietyForm.reset();
+    this.formSubmitted = false;
   }
 
-  onSubmit(){
+  onSubmit(formDirective: FormGroupDirective){
     if (this.anxietyForm.valid && !!this.sentiment && !!this.symptoms && !!this.emotions) {
       this.anxietyFormService.storeFormData(this.anxietyForm.value)
-      this.handleClearForm()
+      // this.handleClearForm()
+      formDirective.resetForm()
+      this.anxietyForm.reset()
     } else {
+      // this.anxietyFormService.formSubmitted(true)
       this.formSubmitted = true
     }
   }

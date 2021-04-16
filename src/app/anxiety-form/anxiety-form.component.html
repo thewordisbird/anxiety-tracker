@@ -1,11 +1,14 @@
 
 <form
   [formGroup]="anxietyForm"
-  (ngSubmit)="onSubmit()"
+  #formDirective="ngForm"
+  (ngSubmit)="onSubmit(formDirective)"
   class="mat-elevation-z8">
 
   <app-form-sentiment-field
-    [inValid]="(sentiment === null && formSubmitted)">
+    [submitted]="formSubmitted"
+    (isValid)="onSentimentValid($event)"
+  >
   </app-form-sentiment-field>
 
   <div class="field-inputs">
@@ -36,13 +39,15 @@
   <app-form-chip-field
     [fieldLabel]="'Symptom'"
     [itemOptions]="symptomOptions"
-    [chipItems]="symptoms">
+    [chipItems]="symptoms"
+    [submitted]="formSubmitted">
   </app-form-chip-field>
 
   <app-form-chip-field
     [fieldLabel]="'Emotion'"
     [itemOptions]="emotionOptions"
-    [chipItems]="emotions">
+    [chipItems]="emotions"
+    [submitted]="formSubmitted">
   </app-form-chip-field>
 
   <div class="field-inputs">
@@ -63,6 +68,6 @@
 
   <div class="form-buttons">
     <button type="submit" mat-raised-button color="primary">Submit</button>
-    <button type="button" mat-raised-button color="warn" (click)="handleClearForm()">Clear</button>
+    <button type="button" mat-raised-button color="warn" (click)="handleClearForm(formDirective)">Clear</button>
   </div>
 </form>

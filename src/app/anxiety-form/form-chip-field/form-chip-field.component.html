@@ -1,31 +1,34 @@
 <app-add-new-item *ngIf="showModal" [fieldLabel]="fieldLabel" (newItem)="handleAddNewItem($event)" (close)="handleCloseModal()"></app-add-new-item>
 <div class="form-chip-field">
-  <div class="form-chip-add-input">
-    <button
-      mat-raised-button
-      color="basic"
-      type="button"
-      (click)="handleAddItem()">
-      Add {{fieldLabel}}
-    </button>
+  <form #form [formGroup]="chipForm" (ngSubmit)="onSubmit()">
+    <div class="form-chip-add-input">
+      <button
+        mat-raised-button
+        color="basic"
+        type="submit">
+        Add {{fieldLabel}}
+      </button>
 
-    <mat-form-field class="mat-select-invalid ng-invalid">
-      <mat-label>Select {{fieldLabel}}</mat-label>
-      <mat-select
-        id={{fieldLabel.toLowerCase()}}
-        [formControl]="chipItem"
-        (selectionChange)="handleSelectChange()"
-        class="mat-select-invalid ng-invalid">
+      <mat-form-field class="">
+        <mat-label>Select {{fieldLabel}}</mat-label>
+        <mat-select
+          id={{fieldLabel.toLowerCase()}}
+          formControlName="chipItem"
+          (selectionChange)="handleSelectChange()"
+          [errorStateMatcher]="matcher">
 
-        <mat-option  *ngFor="let itemOption of itemOptions" [value]="itemOption.value">
-          {{itemOption.display}}
-        </mat-option>
-        <mat-option value="add-item">
-          Add {{fieldLabel}}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-  </div>
+          <mat-option  *ngFor="let itemOption of itemOptions" [value]="itemOption.value">
+            {{itemOption.display}}
+          </mat-option>
+          <mat-option value="add-item">
+            Add {{fieldLabel}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+  </form>
+
 
   <mat-card>
     <mat-chip-list #chipList (aria-label)="fieldLabel">
