@@ -6,9 +6,7 @@
   class="mat-elevation-z8">
 
   <app-form-sentiment-field
-    [submitted]="formSubmitted"
-    (isValid)="onSentimentValid($event)"
-  >
+    [submitted]="formSubmitted">
   </app-form-sentiment-field>
 
   <div class="field-inputs">
@@ -38,14 +36,14 @@
 
   <app-form-chip-field
     [fieldLabel]="'Symptom'"
-    [itemOptions]="symptomOptions"
+    [itemOptions]="(symptomOptions | async)"
     [chipItems]="symptoms"
     [submitted]="formSubmitted">
   </app-form-chip-field>
 
   <app-form-chip-field
     [fieldLabel]="'Emotion'"
-    [itemOptions]="emotionOptions"
+    [itemOptions]="(emotionOptions | async)"
     [chipItems]="emotions"
     [submitted]="formSubmitted">
   </app-form-chip-field>
@@ -64,10 +62,8 @@
     </mat-form-field>
   </div>
 
-
-
   <div class="form-buttons">
     <button type="submit" mat-raised-button color="primary">Submit</button>
-    <button type="button" mat-raised-button color="warn" (click)="handleClearForm(formDirective)">Clear</button>
+    <button type="button" mat-raised-button color="warn" (click)="onClearForm(formDirective)">Clear</button>
   </div>
 </form>

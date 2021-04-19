@@ -138,7 +138,7 @@ export class AuthService{
       // Handle unknown errors
       return throwError(errorMessage)
     }
-    switch (errorResp.error.message) {
+    switch (errorResp.error.error.message) {
       case 'EMAIL_EXISTS':
         errorMessage = 'This email already exists.';
         break;
@@ -148,6 +148,8 @@ export class AuthService{
       case 'INVALID_PASSWORD':
         errorMessage = 'This password is not correct';
     }
+
+
     return throwError(errorMessage);
   }
 

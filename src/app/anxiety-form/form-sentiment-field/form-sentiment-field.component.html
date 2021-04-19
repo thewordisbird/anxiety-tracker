@@ -1,15 +1,15 @@
 <div class="form-sentiment-field">
   <div class="sentiment-label">
     <p
-      [ngClass]="{'sentiment-invalid': (submitted| async) && (sentiment | async) === null}">
-        My Anxiety Level is:* <span *ngIf="(sentiment | async) !== null">{{ sentimentMap[(sentiment | async)].description}}</span>
+      [ngClass]="{'sentiment-invalid': submitted && selected === null}">
+        My Anxiety Level is:* <span class="sentiment-display" *ngIf="selected">{{ sentimentMap[selected].description}}</span>
     </p>
   </div>
   <div class="sentiment-icons" >
     <div class="sentiment-icon" *ngFor="let s of sentimentMap; let i=index">
       <span
         class="material-icons sentiment-icons"
-        [ngClass]="{'sentiment-icon-active': (sentiment | async) === i}"
+        [ngClass]="{'sentiment-icon-active': selected === i}"
         (click)="setSentiment(i)">
         {{ s.svgName }}
       </span>

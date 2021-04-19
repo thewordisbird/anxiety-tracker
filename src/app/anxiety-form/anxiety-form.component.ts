@@ -1,70 +1,61 @@
 import { FormGroupDirective, Validators } from '@angular/forms';
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterViewChecked, AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { DataStorageService } from '../shared/data-storage.service';
 import { Symptom, Emotion } from '../models';
 import { AnxietyFormService } from './anxiety-form.service';
 import { Subscription } from 'rxjs';
-import { env } from 'process';
+import { map, tap } from 'rxjs/operators';
+import { FormSentimentFieldComponent } from './form-sentiment-field/form-sentiment-field.component';
 
 @Component({
   selector: 'app-anxiety-form',
   templateUrl: './anxiety-form.component.html',
   styleUrls: ['./anxiety-form.component.css']
 })
-export class AnxietyFormComponent implements OnInit, OnDestroy{
+export class AnxietyFormComponent implements OnInit, AfterViewChecked, OnDestroy {
+  @ViewChild(FormSentimentFieldComponent) sentimentComponent: FormSentimentFieldComponent;
+
   anxietyForm: FormGroup;
 
-  symptomOptions: Symptom[];
-  emotionOptions: Emotion[];
-
-  sentimentSubscription: Subscription
   symptomsSubscription: Subscription;
   emotionsSubscription: Subscription;
 
-  sentiment: number = null;
+  sentiment: number;
   symptoms: Symptom[] = [];
   emotions: Emotion[] = [];
 
-  sentimentValid: boolean = false
-
   formSubmitted: boolean = false;
-
 
   constructor (
     private anxietyFormService: AnxietyFormService,
     private dataStorageService: DataStorageService
   ) {
-  };
 
-  ngOnInit() {
-    this.initForm()
-
-    // TODO: Move to service
-    this.dataStorageService.user.subscribe(user => {
-      this.symptomOptions = user.symptoms
-      this.emotionOptions = user.emotions
-    })
-
-    this.sentimentSubscription = this.anxietyFormService.sentimentChanged$
-      .subscribe( sentiment => {
-        this.sentiment = sentiment
-      })
-
-    this.symptomsSubscription = this.anxietyFormService.symptomsChanged
+    this.symptomsSubscription = this.anxietyFormService.symptoms$
       .subscribe((symptoms: Symptom[]) => {
         this.symptoms = symptoms
       })
 
-    this.emotionsSubscription = this.anxietyFormService.emotionsChanged
+    this.emotionsSubscription = this.anxietyFormService.emotions$
       .subscribe((emotions: Emotion[]) => {
         this.emotions = emotions
       })
+  };
+
+  symptomOptions = this.dataStorageService.user.pipe(map(user => user.symptoms))
+  emotionOptions = this.dataStorageService.user.pipe(map(user => user.emotions))
+
+  ngOnInit() {
+    this.initForm()
+  }
+
+  ngAfterViewChecked() {
+    this.sentiment = this.sentimentComponent.selected
   }
 
   ngOnDestroy() {
-    // Clean up subscriptions
-    this.unsubscribe(this.sentimentSubscription)
+    // Unsubscribe from subscriptions
     this.unsubscribe(this.symptomsSubscription)
     this.unsubscribe(this.emotionsSubscription)
   }
@@ -74,7 +65,6 @@ export class AnxietyFormComponent implements OnInit, OnDestroy{
     const time = '';
     const thoughts = ''
 
-    // this.anxietyFormService.formSubmitted(false);
     this.formSubmitted = false;
 
     this.anxietyForm = new FormGroup({
@@ -82,18 +72,10 @@ export class AnxietyFormComponent implements OnInit, OnDestroy{
       'time': new FormControl(time, Validators.required),
       'thoughts': new FormControl(thoughts, Validators.required)
     })
-
-    this.anxietyForm.markAsPristine()
-    this.anxietyForm.markAsUntouched()
   }
 
-  // Handlers
-  onSentimentValid(event) {
-    this.sentimentValid = event;
-  }
-
-  handleClearForm(formDirective: FormGroupDirective) {
-    this.anxietyFormService.updateSentiment(null);
+  onClearForm(formDirective: FormGroupDirective) {
+    this.sentimentComponent.clearSentiment();
     this.anxietyFormService.clearSymptoms();
     this.anxietyFormService.clearEmotions();
 
@@ -105,12 +87,13 @@ export class AnxietyFormComponent implements OnInit, OnDestroy{
 
   onSubmit(formDirective: FormGroupDirective){
     if (this.anxietyForm.valid && !!this.sentiment && !!this.symptoms && !!this.emotions) {
-      this.anxietyFormService.storeFormData(this.anxietyForm.value)
-      // this.handleClearForm()
-      formDirective.resetForm()
-      this.anxietyForm.reset()
+      const submissionData = {
+        ...this.anxietyForm.value,
+        level: this.sentimentComponent.selected
+      }
+      this.anxietyFormService.storeFormData(submissionData)
+      this.onClearForm(formDirective)
     } else {
-      // this.anxietyFormService.formSubmitted(true)
       this.formSubmitted = true
     }
   }

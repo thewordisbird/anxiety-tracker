@@ -29,3 +29,7 @@
 .sentiment-invalid {
   color: red;
 }
+
+.sentiment-display {
+  color: black;
+}

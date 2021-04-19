@@ -1,4 +1,4 @@
-<app-add-new-item *ngIf="showModal" [fieldLabel]="fieldLabel" (newItem)="handleAddNewItem($event)" (close)="handleCloseModal()"></app-add-new-item>
+<app-add-new-item *ngIf="showModal" [fieldLabel]="fieldLabel" (newItem)="onAddNewItem($event)" (close)="onCloseModal()"></app-add-new-item>
 <div class="form-chip-field">
   <form #form [formGroup]="chipForm" (ngSubmit)="onSubmit()">
     <div class="form-chip-add-input">
@@ -14,7 +14,7 @@
         <mat-select
           id={{fieldLabel.toLowerCase()}}
           formControlName="chipItem"
-          (selectionChange)="handleSelectChange()"
+          (selectionChange)="onSelectChange()"
           [errorStateMatcher]="matcher">
 
           <mat-option  *ngFor="let itemOption of itemOptions" [value]="itemOption.value">
@@ -33,7 +33,7 @@
   <mat-card>
     <mat-chip-list #chipList (aria-label)="fieldLabel">
       <mat-chip *ngFor="let chipItem of chipItems" [selectable]="true"
-        [removable]="true" (removed)="handleRemoveChip(chipItem.value)">
+        [removable]="true" (removed)="onRemoveChip(chipItem.value)">
         {{chipItem.display}}
         <mat-icon matChipRemove>cancel</mat-icon>
       </mat-chip>

@@ -14,11 +14,11 @@ export class AddNewItemComponent {
 
   constructor() {}
 
-  handleAddItem() {
+  onAddItem() {
     this.newItem.emit(this.item)
   }
 
-  handleClose() {
+  onClose() {
     this.close.emit();
   }
 }

@@ -1,12 +1,12 @@
-<div class="backdrop" (click)="handleClose()"></div>
+<div class="backdrop" (click)="onClose()"></div>
 <mat-card class="modal">
-  <mat-icon class="close-icon" (click)="handleClose()">close</mat-icon>
+  <mat-icon class="close-icon" (click)="onClose()">close</mat-icon>
   <div class="add-new-item-input">
     <button
       mat-raised-button
       color="basic"
       type="button"
-      (click)="handleAddItem()">
+      (click)="onAddItem()">
       Add {{fieldLabel}}
     </button>
 
