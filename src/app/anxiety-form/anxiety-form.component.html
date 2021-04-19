@@ -36,14 +36,14 @@
 
   <app-form-chip-field
     [fieldLabel]="'Symptom'"
-    [itemOptions]="(symptomOptions | async)"
+    [itemOptions]="(symptomOptions$ | async)"
     [chipItems]="symptoms"
     [submitted]="formSubmitted">
   </app-form-chip-field>
 
   <app-form-chip-field
     [fieldLabel]="'Emotion'"
-    [itemOptions]="(emotionOptions | async)"
+    [itemOptions]="(emotionOptions$ | async)"
     [chipItems]="emotions"
     [submitted]="formSubmitted">
   </app-form-chip-field>

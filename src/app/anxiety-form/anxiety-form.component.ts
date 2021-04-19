@@ -5,7 +5,7 @@ import { DataStorageService } from '../shared/data-storage.service';
 import { Symptom, Emotion } from '../shared/models';
 import { AnxietyFormService } from './anxiety-form.service';
 import { Subscription } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { map, switchMap, tap, toArray } from 'rxjs/operators';
 import { FormSentimentFieldComponent } from './form-sentiment-field/form-sentiment-field.component';
 
 @Component({
@@ -43,8 +43,26 @@ export class AnxietyFormComponent implements OnInit, AfterViewChecked, OnDestroy
       })
   };
 
-  symptomOptions = this.dataStorageService.user.pipe(map(user => user.symptoms))
-  emotionOptions = this.dataStorageService.user.pipe(map(user => user.emotions))
+  compareFn = (a, b) => {
+    console.log('in compare')
+    if (a.value < b.value) {
+      return -1
+    }
+    if (a.value > b.value) {
+      return 1
+    }
+    return 0;
+  }
+
+  symptomOptions$ = this.dataStorageService.user.pipe(
+    map(user => user.symptoms),
+    map(symptoms => symptoms.sort(this.compareFn))
+  )
+
+  emotionOptions$ = this.dataStorageService.user.pipe(
+    map(user => user.emotions),
+    map(emotions => emotions.sort(this.compareFn))
+  )
 
   ngOnInit() {
     this.initForm()

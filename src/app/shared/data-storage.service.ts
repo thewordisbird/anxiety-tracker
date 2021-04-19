@@ -20,8 +20,8 @@ const defaultSymptoms = [
 const defaultEmotions = [
   {display: 'Fear', value: 'fear'},
   {display: 'Sadness', value: 'sadness'},
-  {display: 'Anger', value: 'Anger'},
-  {display: 'Joy', value: 'Joy'},
+  {display: 'Anger', value: 'anger'},
+  {display: 'Joy', value: 'joy'},
   {display: 'Surprise', value: 'surprise'},
   {display: 'Disgust', value: 'disgust'},
   {display: 'Anticipation', value: 'anticipation'},
