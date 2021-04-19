@@ -1,7 +1,7 @@
 
 <table
   mat-table
-  [dataSource]="anxietyEvents"
+  [dataSource]="(events$ | async)"
   multiTemplateDataRows
   class="mat-elevation-z8">
 

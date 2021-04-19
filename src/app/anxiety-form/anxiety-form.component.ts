@@ -43,8 +43,7 @@ export class AnxietyFormComponent implements OnInit, AfterViewChecked, OnDestroy
       })
   };
 
-  compareFn = (a, b) => {
-    console.log('in compare')
+  compareFn = (a: Symptom | Emotion, b: Symptom| Emotion) => {
     if (a.value < b.value) {
       return -1
     }

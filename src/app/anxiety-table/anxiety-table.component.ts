@@ -2,7 +2,7 @@ import { Component, OnDestroy } from '@angular/core';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { DataStorageService } from '../shared/data-storage.service';
 import { AnxietyEvent } from '../shared/models'
-import { Subscription } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-anxiety-table',
@@ -16,34 +16,61 @@ import { Subscription } from 'rxjs';
     ]),
   ],
 })
-export class AnxietyTableComponent implements OnDestroy{
+export class AnxietyTableComponent {
   displayColumns : string[] = ['toggle', 'date', 'time', 'level']
   dataColumns: string[] = ['date', 'time', 'level']
   expandedElement: AnxietyEvent | null;
   expandedElements: {};
   anxietyEvents = []
 
-  dataStorageSubscription: Subscription
+  constructor (private dataStorageService: DataStorageService) { };
 
-  constructor (private dataStorageService: DataStorageService) {
-    // TODO: Need to figure out better way to get datestring. currently require date field type to be any
-    this.dataStorageSubscription = this.dataStorageService.anxietyEvents.subscribe(anxietyEvents => {
-      this.anxietyEvents = anxietyEvents.map(element => {
-        const eventDate = new Date(element.date.seconds * 1000);
-        return {...element, date: eventDate.toDateString()}
-      });
+  compareFn = (a: AnxietyEvent, b: AnxietyEvent) => {
+    const dateA = new Date(a.date)
+    const dateB = new Date(b.date)
+    if (dateA < dateB) {
+      return 1
+    }
+    if (dateA > dateB) {
+      return -1
+    }
+    if (dateA === dateB) {
+      const timeA = a.time.split(':')
+      const minutesA = parseInt(timeA[0]) * 60 + parseInt(timeA[1])
 
-      this.expandedElements = anxietyEvents.reduce((acc, cur) => {
-        return {...acc, [cur.id]: false}
-      }, {})
-    })
-  };
+      const timeB = b.time.split(':')
+      const minutesB = parseInt(timeB[0]) * 60 + parseInt(timeB[1])
 
-  ngOnDestroy() {
-    this.dataStorageSubscription.unsubscribe()
+      if (minutesA > minutesB) {
+        return -1
+      }
+
+      if (minutesA < minutesB) {
+        return 1
+      }
+    }
+    return 0;
   }
 
+  events$ = this.dataStorageService.anxietyEvents.pipe(
+    // Set the expandedElements object. events$ is subscribed to in the template using the asyn pipe.
+    tap(events => {
+      this.expandedElements = events.reduce((acc, cur) => {
+            console.log(cur)
+            return {...acc, [cur.id]: false}
+          }, {})
+    }),
+    map(events => {
+      return events.map(event => {
+          const eventDate = new Date(event.date.seconds * 1000);
+          return {...event, date: eventDate.toDateString()}
+        })
+    }),
+    map(events => events.sort(this.compareFn))
+  )
+
   toggleExpand(anxietyEvent: AnxietyEvent) {
+
     if (this.expandedElement === anxietyEvent) {
       // Case where same element is clicked. Toggle expansion
       this.expandedElements[anxietyEvent.id] = !this.expandedElements[anxietyEvent.id];

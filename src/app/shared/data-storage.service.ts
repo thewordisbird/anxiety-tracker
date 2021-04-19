@@ -52,7 +52,7 @@ export class DataStorageService {
         this.userDoc = this.usersCollection.doc(user.id)
         this.user = this.userDoc.valueChanges()
         this.anxietyEventsCollection = this.userDoc.collection('events')
-        this.anxietyEvents = this.anxietyEventsCollection.valueChanges()
+        this.anxietyEvents = this.anxietyEventsCollection.valueChanges({idField: 'id'})
       }
     })
   }
