@@ -2,7 +2,7 @@ import { FormGroupDirective, Validators } from '@angular/forms';
 import { AfterViewChecked, AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { DataStorageService } from '../shared/data-storage.service';
-import { Symptom, Emotion } from '../models';
+import { Symptom, Emotion } from '../shared/models';
 import { AnxietyFormService } from './anxiety-form.service';
 import { Subscription } from 'rxjs';
 import { map, tap } from 'rxjs/operators';

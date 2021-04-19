@@ -3,7 +3,7 @@ import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument 
 import { Observable } from 'rxjs';
 import { take, tap } from 'rxjs/operators';
 import { AuthService } from '../auth/auth.service';
-import { Symptom, Emotion, AnxietyEvent, FsUser } from '../models';
+import { Symptom, Emotion, AnxietyEvent, FsUser } from './models';
 
 // TODO: Move the defaults to a new user class that will be included on instantiation of new user
 const defaultSymptoms = [

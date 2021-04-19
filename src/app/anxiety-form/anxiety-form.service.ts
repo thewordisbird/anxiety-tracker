@@ -1,17 +1,15 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
-import { AnxietyEvent, Emotion, FsUser, Symptom } from '../models';
+import { AnxietyEvent, Emotion, FsUser, Symptom } from '../shared/models';
 import { DataStorageService } from '../shared/data-storage.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AnxietyFormService{
-  // sentiment$ = new Subject<number>();
   symptoms$ = new Subject<Symptom[]>();
   emotions$ = new Subject<Emotion[]>();
 
-  // private sentiment: number = null;
   private symptoms: Symptom[] = [];
   private emotions: Emotion[] = [];
 
@@ -24,11 +22,6 @@ export class AnxietyFormService{
       this.user = user
     })
   }
-
-  // updateSentiment(sentiment: number) {
-  //   this.sentiment = sentiment;
-  //   this.sentiment$.next(sentiment)
-  // }
 
   updateSymptoms(symptom: Symptom) {
     this.symptoms.push(symptom)

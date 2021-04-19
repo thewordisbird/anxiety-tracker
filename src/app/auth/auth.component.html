@@ -1,5 +1,5 @@
 <div class="auth-form">
-  <mat-card>
+  <mat-card class="mat-elevation-z8">
     <mat-card-title>{{ isSignInMode ? "Login" : "Register" }}</mat-card-title>
     <mat-card-content *ngIf="!isLoading">
       <mat-card *ngIf="error" class="form-error-message">{{ error }}</mat-card>

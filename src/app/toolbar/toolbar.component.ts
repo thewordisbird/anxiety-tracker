@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { AuthService } from '../auth/auth.service';
 
 @Component({
@@ -6,12 +6,12 @@ import { AuthService } from '../auth/auth.service';
   templateUrl: './toolbar.component.html',
   styleUrls: ['./toolbar.component.css']
 })
-export class ToolbarComponent implements OnInit {
+export class ToolbarComponent {
   @Output() toggleNav = new EventEmitter();
+
   constructor(private authService: AuthService) { }
 
-  ngOnInit(): void {
-  }
+  user = this.authService.user;
 
   onToggleNav = () => {
     this.toggleNav.emit()

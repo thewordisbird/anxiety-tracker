@@ -4,7 +4,7 @@
   </button>
   <span>Anxiety Tracker</span>
   <span class="toolbar-spacer"></span>
-  <div class="nav-buttons">
+  <div *ngIf="(user | async)" class="nav-buttons">
     <button class="nav-button" mat-button routerLink="/add" routerLinkActive="active">Add Event</button>
     <button class="nav-button" mat-button routerLink="/events" routerLinkActive="active">View Events</button>
     <button class="nav-button" mat-button routerLink="/profile" routerLinkActive="active">Profile</button>

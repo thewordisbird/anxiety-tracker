@@ -1,7 +1,7 @@
 import { Component, OnDestroy } from '@angular/core';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { DataStorageService } from '../shared/data-storage.service';
-import { AnxietyEvent } from '../models'
+import { AnxietyEvent } from '../shared/models'
 import { Subscription } from 'rxjs';
 
 @Component({
