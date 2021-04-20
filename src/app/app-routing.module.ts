@@ -1,11 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AnxietyFormComponent } from './anxiety-form/anxiety-form.component';
-import { AnxietyTableComponent } from './anxiety-table/anxiety-table.component';
-import { AuthComponent } from './auth/auth.component';
 import { AuthRequired, NotAuthenticated } from './auth/auth.gaurd';
-import { LogoutComponent } from './auth/logout/logout.component';
-import { ProfileComponent } from './profile/profile.component';
 
 const appRoutes: Routes = [
   {
@@ -15,27 +10,23 @@ const appRoutes: Routes = [
   },
   {
     path: 'auth',
-    component: AuthComponent,
+    loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule),
     canActivate: [NotAuthenticated]
   },
   {
     path: 'add',
-    component: AnxietyFormComponent,
+    loadChildren: () => import('./anxiety-form/anxiety-form.module').then(m => m.AnxietyFormModule),
     canActivate: [AuthRequired]
   },
   {
     path: 'events',
-    component: AnxietyTableComponent,
+    loadChildren: () => import('./anxiety-table/anxiety-table.module').then(m => m.AnxietyTableModule),
     canActivate: [AuthRequired]
   },
   {
     path: 'profile',
-    component: ProfileComponent,
+    loadChildren: () => import('./profile/profile.module').then(m => m.ProfileModule),
     canActivate: [AuthRequired]
-  },
-  {
-    path: 'logout',
-    component: LogoutComponent
   },
   {
     path: '**',

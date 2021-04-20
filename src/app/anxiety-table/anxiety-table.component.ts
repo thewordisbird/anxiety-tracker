@@ -40,13 +40,13 @@ export class AnxietyTableComponent {
 
       const timeB = b.time.split(':')
       const minutesB = parseInt(timeB[0]) * 60 + parseInt(timeB[1])
-
+      console.log(minutesA, minutesB)
       if (minutesA > minutesB) {
-        return -1
+        return 1
       }
 
       if (minutesA < minutesB) {
-        return 1
+        return -1
       }
     }
     return 0;
@@ -56,7 +56,7 @@ export class AnxietyTableComponent {
     // Set the expandedElements object. events$ is subscribed to in the template using the asyn pipe.
     tap(events => {
       this.expandedElements = events.reduce((acc, cur) => {
-            console.log(cur)
+            // console.log(cur)
             return {...acc, [cur.id]: false}
           }, {})
     }),

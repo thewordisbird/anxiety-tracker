@@ -1,5 +1,5 @@
 import { FormGroupDirective, Validators } from '@angular/forms';
-import { AfterViewChecked, AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterViewChecked, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { DataStorageService } from '../shared/data-storage.service';
 import { Symptom, Emotion } from '../shared/models';

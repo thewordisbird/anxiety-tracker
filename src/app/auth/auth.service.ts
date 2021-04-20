@@ -1,10 +1,10 @@
-import { HttpClient, HttpErrorResponse, HttpParams } from "@angular/common/http";
+import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
 import { BehaviorSubject, throwError } from "rxjs";
 import { catchError, take, tap } from "rxjs/operators";
 import { environment } from "src/environments/environment";
-import {User} from './user.model';
+import { User } from './user.model';
 
 export interface AuthResponseData {
   kind: string;
@@ -23,7 +23,6 @@ export class AuthService{
   private tokenExpTimer: any;
 
   constructor (
-    // private dataStorageService: DataStorageService,
     private http: HttpClient,
     private router: Router
   ) {};
