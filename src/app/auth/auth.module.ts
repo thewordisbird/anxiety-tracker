@@ -6,15 +6,18 @@ import { MaterialModule } from "../material/material.module";
 
 import { AuthComponent } from "./auth.component";
 import { LogoutComponent } from "./logout/logout.component";
+import { AuthRequired, NotAuthenticated } from "./auth.gaurd";
 
 const routes: Routes = [
   {
     path: '',
-    component: AuthComponent
+    component: AuthComponent,
+    canActivate: [NotAuthenticated]
   },
   {
     path: 'logout',
-    component: LogoutComponent
+    component: LogoutComponent,
+    canActivate: [AuthRequired]
   },
 ]
 

@@ -1,11 +1,11 @@
 <app-toolbar (toggleNav)="sidenav.toggle()"></app-toolbar>
 <mat-sidenav-container class="sidenav-container">
   <mat-sidenav class="sidenav-nav"#sidenav>
-    <mat-nav-list>
+    <mat-nav-list *ngIf="(user$ | async) ">
       <a routerLink="/add" mat-list-item>Add Event</a>
       <a routerLink="/events" mat-list-item>View Events</a>
       <a routerLink="/profile" mat-list-item>Profile</a>
-      <a routerLink="/logout" mat-list-item>Logout</a>
+      <a routerLink="auth/logout" mat-list-item>Logout</a>
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content class="container">

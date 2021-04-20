@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes, PreloadAllModules } from '@angular/router';
-import { AuthRequired, NotAuthenticated } from './auth/auth.gaurd';
+import { AuthRequired } from './auth/auth.gaurd';
 
 const appRoutes: Routes = [
   {
@@ -11,7 +11,6 @@ const appRoutes: Routes = [
   {
     path: 'auth',
     loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule),
-    canActivate: [NotAuthenticated]
   },
   {
     path: 'add',
