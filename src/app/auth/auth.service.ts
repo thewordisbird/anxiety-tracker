@@ -62,7 +62,6 @@ export class AuthService{
   }
 
   changePassword(newPassword:string) {
-    console.log('changing pw')
     const endpoint = `https://identitytoolkit.googleapis.com/v1/accounts:update?key=${environment.firebase.apiKey}`
     let currentUser: User;
     this.user.pipe(
@@ -158,7 +157,6 @@ export class AuthService{
     token: string,
     expiresIn: number
   ) {
-    console.log('handleAuth')
     const expDate = new Date(
       new Date().getTime() + expiresIn * 1000
     );
