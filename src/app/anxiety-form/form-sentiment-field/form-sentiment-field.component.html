@@ -8,7 +8,7 @@
   <div class="sentiment-icons" >
     <div class="sentiment-icon" *ngFor="let s of sentimentMap; let i=index">
       <span
-        class="material-icons sentiment-icons"
+        class="material-icons"
         [ngClass]="{'sentiment-icon-active': selected === i}"
         (click)="setSentiment(i)">
         {{ s.svgName }}

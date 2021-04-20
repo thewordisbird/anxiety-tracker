@@ -10,20 +10,23 @@
   justify-content: space-between;
 }
 
-.sentiment-icons {
+.material-icons {
   font-size: 48px;
   margin-right: 24px;
-  color: gray;
+  color: lightgray;
   cursor: pointer;
 }
 
-.sentiment-icon:hover {
-  opacity: 100%;
+.material-icons:hover {
+  color: darkgray;
 }
 
 .sentiment-icon-active {
   color: black;
-  opacity: 100%;
+}
+
+.sentiment-icon-active:hover {
+  color: black;
 }
 
 .sentiment-invalid {
