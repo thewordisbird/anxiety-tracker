@@ -5,7 +5,6 @@
 mat-card {
   border: none;
   border-radius: none;
-  box-shadow: none;
 }
 
 mat-form-field {
@@ -45,6 +44,7 @@ mat-card.form-error-message {
   mat-card {
     border: 1px solid lightblue;
     border-radius: 6px;
+    box-shadow:;
     margin: 12px;
   }
 }
