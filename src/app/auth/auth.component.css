@@ -3,9 +3,9 @@
 }
 
 mat-card {
-  border: 1px solid lightblue;
-  border-radius: 6px;
-  margin: 12px;
+  border: none;
+  border-radius: none;
+  box-shadow: none;
 }
 
 mat-form-field {
@@ -40,5 +40,11 @@ mat-card.form-error-message {
     margin: auto;
     margin-top: 24px;
     width: 400px;
+  }
+
+  mat-card {
+    border: 1px solid lightblue;
+    border-radius: 6px;
+    margin: 12px;
   }
 }
