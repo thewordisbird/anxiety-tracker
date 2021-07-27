@@ -1,5 +1,7 @@
 # AnxietyTracker
 
+Demo the app: [https://anxiety-tracker.thewordisbird.dev](https://anxiety-tracker.thewordisbird.dev/) (un: demo@email.com pw: 123123)
+
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.1.2.
 
 ## Development server
