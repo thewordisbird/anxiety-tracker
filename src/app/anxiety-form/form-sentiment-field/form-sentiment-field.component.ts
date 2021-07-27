@@ -5,29 +5,30 @@ import { sentimentMap } from './sentiment-map';
 @Component({
   selector: 'app-form-sentiment-field',
   templateUrl: './form-sentiment-field.component.html',
-  styleUrls: ['./form-sentiment-field.component.css']
+  styleUrls: ['./form-sentiment-field.component.css'],
 })
-export class FormSentimentFieldComponent implements OnDestroy{
+export class FormSentimentFieldComponent implements OnDestroy {
   @Input() submitted: boolean;
-  sentimentSubscription: Subscription
+  sentimentSubscription: Subscription;
   sentimentMap = sentimentMap;
-  selected: number;
+  selected: number | null = null;
 
   constructor(private formSentimentFieldService: FormSentimentFieldService) {
-    this.sentimentSubscription = this.formSentimentFieldService.sentiment$.subscribe(sentiment => {
-      this.selected = sentiment
-    })
+    this.sentimentSubscription =
+      this.formSentimentFieldService.sentiment$.subscribe((sentiment) => {
+        this.selected = sentiment;
+      });
   }
 
   ngOnDestroy() {
-    this.sentimentSubscription.unsubscribe()
+    this.sentimentSubscription.unsubscribe();
   }
 
   setSentiment(value: number) {
-    this.formSentimentFieldService.setSentiment(value)
+    this.formSentimentFieldService.setSentiment(value);
   }
 
   clearSentiment() {
-    this.formSentimentFieldService.clearSentiment()
+    this.formSentimentFieldService.clearSentiment();
   }
 }

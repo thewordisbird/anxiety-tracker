@@ -2,16 +2,16 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class FormSentimentFieldService {
-  sentiment$ = new BehaviorSubject<number>(null)
+  sentiment$ = new BehaviorSubject<number>(null);
 
   setSentiment(sentiment: number) {
-    this.sentiment$.next(sentiment)
+    this.sentiment$.next(sentiment);
   }
 
   clearSentiment() {
-    this.sentiment$.next(null)
+    this.sentiment$.next(null);
   }
 }

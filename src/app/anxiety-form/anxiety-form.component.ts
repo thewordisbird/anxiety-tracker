@@ -1,23 +1,30 @@
 import { FormGroupDirective, Validators } from '@angular/forms';
-import { AfterViewChecked, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import {
+  AfterViewChecked,
+  Component,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { DataStorageService } from '../shared/data-storage.service';
 import { Symptom, Emotion } from '../shared/models';
 import { AnxietyFormService } from './anxiety-form.service';
 import { Subscription } from 'rxjs';
-import { map, switchMap, tap, toArray } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { FormSentimentFieldComponent } from './form-sentiment-field/form-sentiment-field.component';
 
 @Component({
   selector: 'app-anxiety-form',
   templateUrl: './anxiety-form.component.html',
-  styleUrls: ['./anxiety-form.component.css']
+  styleUrls: ['./anxiety-form.component.css'],
 })
-export class AnxietyFormComponent implements OnInit, AfterViewChecked, OnDestroy {
-  @ViewChild(FormSentimentFieldComponent) sentimentComponent: FormSentimentFieldComponent;
-
+export class AnxietyFormComponent
+  implements OnInit, AfterViewChecked, OnDestroy
+{
+  @ViewChild(FormSentimentFieldComponent)
+  sentimentComponent: FormSentimentFieldComponent;
   anxietyForm: FormGroup;
-
   symptomsSubscription: Subscription;
   emotionsSubscription: Subscription;
 
@@ -27,68 +34,70 @@ export class AnxietyFormComponent implements OnInit, AfterViewChecked, OnDestroy
 
   formSubmitted: boolean = false;
 
-  constructor (
+  constructor(
     private anxietyFormService: AnxietyFormService,
     private dataStorageService: DataStorageService
   ) {
+    this.symptomsSubscription = this.anxietyFormService.symptoms$.subscribe(
+      (symptoms: Symptom[]) => {
+        this.symptoms = symptoms;
+      }
+    );
 
-    this.symptomsSubscription = this.anxietyFormService.symptoms$
-      .subscribe((symptoms: Symptom[]) => {
-        this.symptoms = symptoms
-      })
-
-    this.emotionsSubscription = this.anxietyFormService.emotions$
-      .subscribe((emotions: Emotion[]) => {
-        this.emotions = emotions
-      })
-  };
-
-  compareFn = (a: Symptom | Emotion, b: Symptom| Emotion) => {
-    if (a.value < b.value) {
-      return -1
-    }
-    if (a.value > b.value) {
-      return 1
-    }
-    return 0;
+    this.emotionsSubscription = this.anxietyFormService.emotions$.subscribe(
+      (emotions: Emotion[]) => {
+        this.emotions = emotions;
+      }
+    );
   }
 
+  compareFn = (a: Symptom | Emotion, b: Symptom | Emotion) => {
+    if (a.value < b.value) {
+      return -1;
+    }
+    if (a.value > b.value) {
+      return 1;
+    }
+    return 0;
+  };
+
   symptomOptions$ = this.dataStorageService.user.pipe(
-    map(user => user.symptoms),
-    map(symptoms => symptoms.sort(this.compareFn))
-  )
+    map((user) => user.symptoms),
+    map((symptoms) => symptoms.sort(this.compareFn))
+  );
 
   emotionOptions$ = this.dataStorageService.user.pipe(
-    map(user => user.emotions),
-    map(emotions => emotions.sort(this.compareFn))
-  )
+    map((user) => user.emotions),
+    map((emotions) => emotions.sort(this.compareFn))
+  );
 
   ngOnInit() {
-    this.initForm()
+    this.initForm();
   }
 
   ngAfterViewChecked() {
-    this.sentiment = this.sentimentComponent.selected
+    this.sentiment = this.sentimentComponent.selected;
+    console.log(this.sentiment);
   }
 
   ngOnDestroy() {
     // Unsubscribe from subscriptions
-    this.unsubscribe(this.symptomsSubscription)
-    this.unsubscribe(this.emotionsSubscription)
+    this.unsubscribe(this.symptomsSubscription);
+    this.unsubscribe(this.emotionsSubscription);
   }
 
   initForm() {
     const date = '';
     const time = '';
-    const thoughts = ''
+    const thoughts = '';
 
     this.formSubmitted = false;
 
     this.anxietyForm = new FormGroup({
-      'date': new FormControl(date, Validators.required),
-      'time': new FormControl(time, Validators.required),
-      'thoughts': new FormControl(thoughts, Validators.required)
-    })
+      date: new FormControl(date, Validators.required),
+      time: new FormControl(time, Validators.required),
+      thoughts: new FormControl(thoughts, Validators.required),
+    });
   }
 
   onClearForm(formDirective: FormGroupDirective) {
@@ -102,16 +111,22 @@ export class AnxietyFormComponent implements OnInit, AfterViewChecked, OnDestroy
     this.formSubmitted = false;
   }
 
-  onSubmit(formDirective: FormGroupDirective){
-    if (this.anxietyForm.valid && !!this.sentiment && !!this.symptoms && !!this.emotions) {
+  onSubmit(formDirective: FormGroupDirective) {
+    console.log(this.sentiment);
+    if (
+      this.anxietyForm.valid &&
+      !!this.sentiment &&
+      !!this.symptoms &&
+      !!this.emotions
+    ) {
       const submissionData = {
         ...this.anxietyForm.value,
-        level: this.sentimentComponent.selected
-      }
-      this.anxietyFormService.storeFormData(submissionData)
-      this.onClearForm(formDirective)
+        level: this.sentimentComponent.selected,
+      };
+      this.anxietyFormService.storeFormData(submissionData);
+      this.onClearForm(formDirective);
     } else {
-      this.formSubmitted = true
+      this.formSubmitted = true;
     }
   }
 
@@ -119,11 +134,9 @@ export class AnxietyFormComponent implements OnInit, AfterViewChecked, OnDestroy
   unsubscribe(subscription: Subscription) {
     // handles unsubscription cases when a subscription has not been set before navigation and is undefined
     try {
-      subscription.unsubscribe()
+      subscription.unsubscribe();
     } catch (err) {
-      return
+      return;
     }
   }
 }
-
-
