@@ -28,7 +28,7 @@ export class AnxietyFormComponent
   symptomsSubscription: Subscription;
   emotionsSubscription: Subscription;
 
-  sentiment: number;
+  sentiment: number | null = null;
   symptoms: Symptom[] = [];
   emotions: Emotion[] = [];
 
@@ -115,7 +115,7 @@ export class AnxietyFormComponent
     console.log(this.sentiment);
     if (
       this.anxietyForm.valid &&
-      !!this.sentiment &&
+      this.sentiment !== null &&
       !!this.symptoms &&
       !!this.emotions
     ) {
